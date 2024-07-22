@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
 import { ImagesAssets } from "../Image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function CreateDone({ navigation }) {
   navigation = useNavigation();
-
+  
   return (
     <View style={styles.container}>
       <Image

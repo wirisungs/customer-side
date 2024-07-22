@@ -1,23 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { Order_EV } from '../../Data/data';
 
 export default function OrderWait({ navigation }) {
-  
+  const [promotions, setPromotions] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://192.168.1.15:3001/api/promotions');
+        const promotionsData = await response.json();
+        setPromotions(promotionsData);
+      } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   return (
     <View style={styles.container}>
         <ScrollView  showsVerticalScrollIndicator={false}>
-        {Order_EV.map((item, index) => (
+        {promotions.map((item, index) => (
             <TouchableOpacity key={index} onPress={() => navigation.navigate('Map')}>
             <View style={styles.box}>
                 <View style={styles.row1}>
-                    <Text style={styles.macode}>{item.code}</Text>
+                    <Text style={styles.macode}>{item.Code}</Text>
                     <Text style={styles.detail}>Chi tiết</Text>
                 </View>
-                <Text style={styles.mota}>{item.detail}</Text>
+                <Text style={styles.mota}>{item.Detail}</Text>
                 <View style={styles.row3}>
                     <Text style={styles.total}>Tổng:</Text>
-                    <Text style={styles.price}>{item.price}đ</Text>
+                    <Text style={styles.price}>{formatPrice(item.Price)}đ</Text>
                 </View>
             </View>
             </TouchableOpacity>
