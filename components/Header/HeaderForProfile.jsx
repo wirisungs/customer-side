@@ -31,7 +31,7 @@ const HeaderForProfile = () => {
               </View>
               <View>
                 <Text className="text-white text-[14px]">
-                  tranhuuminhtri0310@gmail.com
+                  tranhuuminhtri0310@gmail.commmmm
                 </Text>
               </View>
             </View>
