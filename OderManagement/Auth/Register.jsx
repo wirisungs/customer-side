@@ -1,35 +1,43 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 // import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import CheckBox from 'react-native-check-box';
-import { LinearGradient } from 'expo-linear-gradient';
+import CheckBox from "react-native-check-box";
+import { LinearGradient } from "expo-linear-gradient";
+import Checkbox from "../../components/Input/Checkbox";
 
 export default function Register({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repassword, setRepassword] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repassword, setRepassword] = useState("");
+  const [name, setName] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
-//   const auth = getAuth();
+  //   const auth = getAuth();
 
-//   const handleRegister = async () => {
-//     if (password !== repassword) {
-//       Alert.alert('Error', 'Mật khẩu và nhập lại mật khẩu không khớp!');
-//       return;
-//     }
-//     if (!isChecked) {
-//       Alert.alert('Error', 'Bạn phải đồng ý với điều khoản sử dụng!');
-//       return;
-//     }
-//     try {
-//       await createUserWithEmailAndPassword(auth, email, password);
-//       navigation.navigate('Home');
-//     } catch (error) {
-//       console.error('Registration error:', error.message);
-//       Alert.alert('Registration failed!', 'Please try again.');
-//     }
-//   };
+  //   const handleRegister = async () => {
+  //     if (password !== repassword) {
+  //       Alert.alert('Error', 'Mật khẩu và nhập lại mật khẩu không khớp!');
+  //       return;
+  //     }
+  //     if (!isChecked) {
+  //       Alert.alert('Error', 'Bạn phải đồng ý với điều khoản sử dụng!');
+  //       return;
+  //     }
+  //     try {
+  //       await createUserWithEmailAndPassword(auth, email, password);
+  //       navigation.navigate('Home');
+  //     } catch (error) {
+  //       console.error('Registration error:', error.message);
+  //       Alert.alert('Registration failed!', 'Please try again.');
+  //     }
+  //   };
 
   return (
     <View style={styles.container}>
@@ -76,21 +84,24 @@ export default function Register({ navigation }) {
         </View>
       </View>
       <View style={styles.checkboxContainer}>
-        <CheckBox
-          style={{flex: 1, padding: 10}}
-          onClick={() => setIsChecked(!isChecked)}
-          isChecked={isChecked}
-          rightText={"Tôi đồng ý với điều khoản sử dụng"}
+        <Checkbox
+          Content={"Đồng ý với điều khoản và điều kiện của chúng tôi"}
         />
       </View>
 
-      <TouchableOpacity style={styles.btnAll} onPress={() => navigation.navigate('CreateStep1')}>
-        <LinearGradient colors={['#04BF45', '#1C9546']} style={styles.btnnext}>
+      <TouchableOpacity
+        style={styles.btnAll}
+        onPress={() => navigation.navigate("OTP")}
+      >
+        <LinearGradient colors={["#04BF45", "#1C9546"]} style={styles.btnnext}>
           <Text style={styles.textnext}>Đăng kí</Text>
         </LinearGradient>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btnAll2} onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity
+        style={styles.btnAll2}
+        onPress={() => navigation.navigate("LoginPage")}
+      >
         <View>
           <Text style={styles.btnDK}>Đăng nhập</Text>
         </View>
@@ -102,34 +113,34 @@ export default function Register({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
   topicAll: {
-    alignItems: 'center',
-    marginTop: '20%',
+    alignItems: "center",
+    marginTop: "20%",
   },
   topic: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 16,
-    color: '#1C1C1C',
+    color: "#1C1C1C",
   },
   topic1: {
-    color: '#808080',
+    color: "#808080",
     fontSize: 16,
   },
   phoneText: {
     height: 50,
-    width: '90%',
-    marginHorizontal: '5%',
+    width: "90%",
+    marginHorizontal: "5%",
     borderWidth: 1,
-    borderRadius: 10,
-    borderColor: 'rgba(105, 95, 165, 0.2)',
-    justifyContent: 'center',
+    borderRadius: 24,
+    borderColor: "rgba(105, 95, 165, 0.2)",
+    justifyContent: "center",
     marginBottom: 10,
   },
   inputAll: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
   },
   numberPhone: {
@@ -137,35 +148,35 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   checkboxContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 20,
-    marginHorizontal: '5%',
-    alignItems: 'center',
+    marginHorizontal: "5%",
+    alignItems: "center",
   },
   btnAll: {
-    alignItems: 'center',
-    backgroundColor: '#695FA5',
-    height: '7%',
-    marginHorizontal: '5%',
-    borderRadius: 20,
-    justifyContent: 'center',
+    alignItems: "center",
+    backgroundColor: "#695FA5",
+    height: "7%",
+    marginHorizontal: "5%",
+    borderRadius: 24,
+    justifyContent: "center",
     marginVertical: 16,
   },
   btnAll2: {
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 2,
-    height: '7%',
-    marginHorizontal: '5%',
-    borderRadius: 20,
-    justifyContent: 'center',
-    borderColor: '#04BF45',
+    height: "7%",
+    marginHorizontal: "5%",
+    borderRadius: 24,
+    justifyContent: "center",
+    borderColor: "#04BF45",
   },
   btnDN: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
   },
   btnDK: {
-    color: '#04BF45',
+    color: "#04BF45",
     fontSize: 18,
   },
   btnAll: {
@@ -173,14 +184,14 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   btnnext: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 24,
     padding: 16,
     marginVertical: 12,
   },
   textnext: {
-    fontWeight: '600',
-    color: '#ffffff',
+    fontWeight: "600",
+    color: "#ffffff",
     fontSize: 20,
   },
 });

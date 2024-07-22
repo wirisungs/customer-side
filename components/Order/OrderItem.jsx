@@ -1,55 +1,62 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import "tailwindcss/tailwind.css";
 
 const OrderItem = () => {
+  const navigation = useNavigation();
   return (
-    <View
-      className="h-auto w-full p-4 flex flex-col bg-white rounded-3xl"
-      style={styles.shadow}
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => navigation.navigate("OrderDetail")}
     >
-      <View className="HeaderContainer flex flex-col">
-        <Text className="OrderID" style={styles.head1}>
-          GJDHLKID
-        </Text>
+      <View
+        className="h-auto w-full p-4 flex flex-col bg-white rounded-3xl"
+        style={styles.shadow}
+      >
+        <View className="HeaderContainer flex flex-col">
+          <Text className="OrderID" style={styles.head1}>
+            GJDHLKID
+          </Text>
 
-        <Text className="OrderID" style={styles.status}>
-          Đang đóng gói
-        </Text>
+          <Text className="OrderID" style={styles.status}>
+            Đang đóng gói
+          </Text>
+        </View>
+
+        <View className="line w-full h-[1px] my-2 bg-[#d9d9d9]" />
+
+        {/* Info */}
+        <View className="HeaderContainer flex flex-col">
+          <Text className="OrderName" style={styles.info}>
+            Tên hàng: Đồ chơi
+          </Text>
+          <Text className="OrderReceiver" style={styles.info}>
+            Người nhận: Trí
+          </Text>
+          <Text className="PhoneNum" style={styles.info}>
+            Số điện thoại: 0389105444
+          </Text>
+          <Text className="Adress" style={styles.info}>
+            Địa chỉ: 37/15 Ấp 2 Nhà Bè
+          </Text>
+          <Text className="Adress" style={styles.info}>
+            Note:
+          </Text>
+        </View>
+
+        <View className="line w-full h-[1px] my-2 bg-[#d9d9d9]" />
+
+        <View className="Total flex flex-row">
+          <Text className="OrderID flex-1" style={styles.head2}>
+            Tổng:
+          </Text>
+          <Text className="OrderID  " style={styles.head2}>
+            3.222.333 vnđ
+          </Text>
+        </View>
       </View>
-
-      <View className="line w-full h-[1px] my-2 bg-[#d9d9d9]" />
-
-      {/* Info */}
-      <View className="HeaderContainer flex flex-col">
-        <Text className="OrderName" style={styles.info}>
-          Tên hàng: Đồ chơi
-        </Text>
-        <Text className="OrderReceiver" style={styles.info}>
-          Người nhận: Trí
-        </Text>
-        <Text className="PhoneNum" style={styles.info}>
-          Số điện thoại: 0389105444
-        </Text>
-        <Text className="Adress" style={styles.info}>
-          Địa chỉ: 37/15 Ấp 2 Nhà Bè
-        </Text>
-        <Text className="Adress" style={styles.info}>
-          Note:
-        </Text>
-      </View>
-
-      <View className="line w-full h-[1px] my-2 bg-[#d9d9d9]" />
-
-      <View className="Total flex flex-row">
-        <Text className="OrderID flex-1" style={styles.head2}>
-          Tổng:
-        </Text>
-        <Text className="OrderID  " style={styles.head2}>
-          3.222.333 vnđ
-        </Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

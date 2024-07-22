@@ -11,7 +11,7 @@ const Checkbox = ({ Content }) => {
     setActive(!isActive);
   };
   return (
-    <View className="flex flex-row items-center">
+    <View className="flex flex-1 flex-row items-center">
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => checkBoxHandle()}

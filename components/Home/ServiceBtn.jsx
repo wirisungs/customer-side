@@ -55,17 +55,22 @@ const ServiceBtn = () => {
           </View>
         </TouchableOpacity>
 
-        <View className="w-16 flex flex-col gap-[6px] items-center">
-          <View
-            className="w-16 h-16 rounded-3xl flex drop-shadow-lg items-center justify-center"
-            style={styles.bgcolor}
-          >
-            <VoucherIC fill="#03CE49" width={36} height={36} />
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => handleNavigation("VoucherPage")}
+        >
+          <View className="w-16 flex flex-col gap-[6px] items-center">
+            <View
+              className="w-16 h-16 rounded-3xl flex drop-shadow-lg items-center justify-center"
+              style={styles.bgcolor}
+            >
+              <VoucherIC fill="#03CE49" width={36} height={36} />
+            </View>
+            <Text className="flex flex-wrap max-w-full text-center">
+              Mã giảm giá
+            </Text>
           </View>
-          <Text className="flex flex-wrap max-w-full text-center">
-            Mã giảm giá
-          </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

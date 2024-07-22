@@ -1,15 +1,28 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
-import { ImagesAssets } from '../../Image';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState, useRef } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import { ImagesAssets } from "../../Image";
+import { LinearGradient } from "expo-linear-gradient";
 
-const MyInput = ({ onChangeText, value, placeholder, inputRef, nextInputRef }) => {
+const MyInput = ({
+  onChangeText,
+  value,
+  placeholder,
+  inputRef,
+  nextInputRef,
+}) => {
   return (
     <View style={styles.hinhvgV}>
       <TextInput
         ref={inputRef}
         onChangeText={(text) => {
-          onChangeText(text.replace(/[^0-9]/g, ''));
+          onChangeText(text.replace(/[^0-9]/g, ""));
           if (text.length === 1 && nextInputRef) {
             nextInputRef.current.focus();
           }
@@ -17,7 +30,7 @@ const MyInput = ({ onChangeText, value, placeholder, inputRef, nextInputRef }) =
         value={value}
         placeholder={placeholder}
         style={styles.input}
-        keyboardType='numeric'
+        keyboardType="numeric"
         maxLength={1}
       />
     </View>
@@ -25,14 +38,14 @@ const MyInput = ({ onChangeText, value, placeholder, inputRef, nextInputRef }) =
 };
 
 export default function OTP({ navigation, route }) {
-  const [text, setText] = useState('');
-  const [text1, setText1] = useState('');
-  const [text2, setText2] = useState('');
-  const [text3, setText3] = useState('');
-  const [text4, setText4] = useState('');
-  const [text5, setText5] = useState('');
-  const { phone } = route.params;
-  const fakeOTP = '123456';
+  const [text, setText] = useState("");
+  const [text1, setText1] = useState("");
+  const [text2, setText2] = useState("");
+  const [text3, setText3] = useState("");
+  const [text4, setText4] = useState("");
+  const [text5, setText5] = useState("");
+  const { phone } = "093123128";
+  const fakeOTP = "123456";
 
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
@@ -44,30 +57,30 @@ export default function OTP({ navigation, route }) {
   const submitOTP = () => {
     const enteredOTP = `${text}${text1}${text2}${text3}${text4}${text5}`;
     if (enteredOTP.length < 6) {
-      alert('Please enter the full OTP.');
+      alert("Please enter the full OTP.");
       return;
     }
     if (enteredOTP !== fakeOTP) {
-      alert('Invalid OTP.');
+      alert("Invalid OTP.");
       clear();
       return;
     }
     clear();
-    navigation.navigate('CreateStep1');
-  }
-  
+    navigation.navigate("LoginPage");
+  };
+
   const resendOTP = () => {
     alert(`OTP: ${fakeOTP}`);
-  }
+  };
 
   const clear = () => {
-    setText('');
-    setText1('');
-    setText2('');
-    setText3('');
-    setText4('');
-    setText5('');
-  }
+    setText("");
+    setText1("");
+    setText2("");
+    setText3("");
+    setText4("");
+    setText5("");
+  };
 
   return (
     <View style={styles.container}>
@@ -85,17 +98,51 @@ export default function OTP({ navigation, route }) {
       <Text style={styles.topic3}>Gửi lại OTP (60s)</Text>
 
       <View style={styles.hinhvgVH}>
-        <MyInput onChangeText={setText} value={text} placeholder="" inputRef={input1Ref} nextInputRef={input2Ref} />
-        <MyInput onChangeText={setText1} value={text1} placeholder="" inputRef={input2Ref} nextInputRef={input3Ref} />
-        <MyInput onChangeText={setText2} value={text2} placeholder="" inputRef={input3Ref} nextInputRef={input4Ref} />
-        <MyInput onChangeText={setText3} value={text3} placeholder="" inputRef={input4Ref} nextInputRef={input5Ref} />
-        <MyInput onChangeText={setText4} value={text4} placeholder="" inputRef={input5Ref} nextInputRef={input6Ref} />
-        <MyInput onChangeText={setText5} value={text5} placeholder="" inputRef={input6Ref} />
+        <MyInput
+          onChangeText={setText}
+          value={text}
+          placeholder=""
+          inputRef={input1Ref}
+          nextInputRef={input2Ref}
+        />
+        <MyInput
+          onChangeText={setText1}
+          value={text1}
+          placeholder=""
+          inputRef={input2Ref}
+          nextInputRef={input3Ref}
+        />
+        <MyInput
+          onChangeText={setText2}
+          value={text2}
+          placeholder=""
+          inputRef={input3Ref}
+          nextInputRef={input4Ref}
+        />
+        <MyInput
+          onChangeText={setText3}
+          value={text3}
+          placeholder=""
+          inputRef={input4Ref}
+          nextInputRef={input5Ref}
+        />
+        <MyInput
+          onChangeText={setText4}
+          value={text4}
+          placeholder=""
+          inputRef={input5Ref}
+          nextInputRef={input6Ref}
+        />
+        <MyInput
+          onChangeText={setText5}
+          value={text5}
+          placeholder=""
+          inputRef={input6Ref}
+        />
       </View>
 
-
       <TouchableOpacity style={styles.btnAll} onPress={submitOTP}>
-        <LinearGradient colors={['#04BF45', '#1C9546']} style={styles.btnnext}>
+        <LinearGradient colors={["#04BF45", "#1C9546"]} style={styles.btnnext}>
           <Text style={styles.textnext}>Xác thực</Text>
         </LinearGradient>
       </TouchableOpacity>
@@ -113,12 +160,12 @@ export default function OTP({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    alignItems: 'center',
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
     padding: 24,
   },
   imageDetail: {
-    position: 'absolute',
+    position: "absolute",
     top: 54,
     left: 24,
   },
@@ -128,60 +175,58 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   topic: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 25,
-    marginTop: 100
+    marginTop: 100,
   },
   topic2: {
-    color:'#808080',
+    color: "#808080",
     fontSize: 12,
-    marginTop: 12
+    marginTop: 12,
   },
 
   topic3: {
-    color:'#808080',
+    color: "#808080",
     fontSize: 12,
-    marginBottom: 24
+    marginBottom: 24,
   },
   hinhvgV: {
     height: 40,
     width: 40,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor:'#E2E2E2',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: "#E2E2E2",
+    alignItems: "center",
+    justifyContent: "center",
     margin: 8,
   },
   hinhvgVH: {
-    flexDirection: 'row',
- 
+    flexDirection: "row",
   },
   info12: {
-    flexDirection: 'row',
-
+    flexDirection: "row",
   },
   info2: {
     marginRight: 10,
-    color:'#808080'
+    color: "#808080",
   },
   text41: {
-    color:'#03A63C'
+    color: "#03A63C",
   },
   btnAll: {
     marginHorizontal: 20,
     borderRadius: 24,
-    width:'100%'
+    width: "100%",
   },
   btnnext: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 24,
     padding: 16,
     marginVertical: 12,
   },
   textnext: {
-    fontWeight: '600',
-    color: '#ffffff',
+    fontWeight: "600",
+    color: "#ffffff",
     fontSize: 20,
   },
 });

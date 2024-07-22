@@ -21,6 +21,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Profile from "../../screens/Profile";
 import HomeStack from "../Home/HomeStack";
+import CreateStep1 from "../../OderManagement/CreateStep1";
 
 const homeName = "Trang chủ";
 const orderName = "Đơn hàng";
@@ -84,7 +85,7 @@ const RouteManager = () => {
 
       <Tab.Screen
         name={createOrderName}
-        component={CreateOrder}
+        component={CreateStep1}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
             <LinearGradient

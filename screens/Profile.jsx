@@ -1,6 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import HeaderProfile from "../components/Header/HeaderForProfile";
 import "tailwindcss/tailwind.css";
 
@@ -16,8 +22,14 @@ import VoucherLine from "../Icons/OutlineIcons/VoucherLine";
 import Policy from "../Icons/OutlineIcons/PolicyLine";
 import Advertise from "../Icons/OutlineIcons/Advertise";
 import TutoLine from "../Icons/OutlineIcons/TutoLine";
+import { useNavigation } from "@react-navigation/native";
 
 const Profile = () => {
+  const navigation = useNavigation();
+
+  const handleNavigation = (screenName) => {
+    navigation.navigate(screenName);
+  };
   return (
     <View>
       <HeaderProfile />
@@ -32,10 +44,12 @@ const Profile = () => {
               <User />
               <Text style={styles.content}>Thông tin cá nhân & Bảo mật</Text>
             </View>
-            <View className="box flex flex-row gap-x-2">
-              <BoxLine troke={"#F91313"} width="24" height="24" />
-              <Text style={styles.content}>Đơn hàng của bạn</Text>
-            </View>
+            <TouchableOpacity onPress={() => handleNavigation("OrderOfMe")}>
+              <View className="box flex flex-row gap-x-2">
+                <BoxLine troke={"#F91313"} width="24" height="24" />
+                <Text style={styles.content}>Đơn hàng của bạn</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
 

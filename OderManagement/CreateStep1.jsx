@@ -1,14 +1,15 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import GreenHeader from './Header/GreenHeader';
-import Step1 from './Main/Step1';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import GreenHeader from "./Header/GreenHeader";
+import Step1 from "./Main/Step1";
+import HeaderForStack from "../components/Header/HeaderForStack";
 
 export default function CreateStep1({ navigation }) {
   const nameHeader = "Tạo đơn hàng";
   return (
     <View style={styles.container}>
-        <GreenHeader navigation={navigation} nameHeader={nameHeader} />
-        <Step1 navigation={navigation} />
+      <HeaderForStack screenName={"Tạo đơn hàng"} />
+      <Step1 navigation={navigation} />
     </View>
   );
 }
@@ -16,6 +17,6 @@ export default function CreateStep1({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
 });
