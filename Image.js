@@ -1,0 +1,18 @@
+export const ImagesAssets = {
+    BackWhite: require('./assets/muiten.png'),
+    Map: require('./assets/map.png'),
+    BackDown: require('./assets/backdown.png'),
+    nextright:  require('./assets/nextright.png'),
+    success:  require('./assets/success.png'),
+    search:  require('./assets/search.png'),
+    promo:  require('./assets/promo.png'),
+    copy:  require('./assets/copy.png'),
+    boxcancel:  require('./assets/boxcancel.png'),
+    bike:  require('./assets/bikecam.png'),
+    star:  require('./assets/star.png'),
+    ava:  require('./assets/ava.png'),
+    bg:  require('./assets/bg.png'),
+    fb:  require('./assets/fb.png'),
+    gg:  require('./assets/gg.png'),  
+    back:  require('./assets/back.png'),                                                                                                 
+};
