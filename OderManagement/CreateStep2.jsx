@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import GreenHeader from "./Header/GreenHeader";
+
 import Step2 from "./Main/Step2";
 import HeaderForStack from "../components/Header/HeaderForStack";
 

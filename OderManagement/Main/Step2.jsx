@@ -30,7 +30,7 @@ export default function Step2({ navigation }) {
         <Text style={styles.texttopic1}>Áp dụng mã giảm giá</Text>
         <View style={styles.rowvoucher}>
           <Text style={styles.textTopic}>Chọn mã giảm giá</Text>
-           <TouchableOpacity  style={styles.imgnext} onPress={() => navigation.navigate('Voucher')} >
+           <TouchableOpacity  style={styles.imgnext} onPress={() => navigation.navigate('VoucherPage')} >
            <Image
             source={ImagesAssets.nextright}
             style={styles.imgnext2}

@@ -16,7 +16,7 @@ import Car from "../Icons/CarContinue";
 import Line from "../Icons/LineNext";
 import Done from "../Icons/DonePro";
 import LineVer from "../Icons/VerticalLine";
-import GreenHeader from "../Header/GreenHeader";
+// import GreenHeader from "../Header/GreenHeader";
 import HeaderForStack from "../../components/Header/HeaderForStack";
 
 export default function DetailOrder({ navigation }) {

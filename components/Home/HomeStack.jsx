@@ -19,6 +19,7 @@ import OrderDetail from "../../OderManagement/OrderDetail";
 import Voucher from "../../OderManagement/Voucher";
 import More from "../../OderManagement/map";
 import OrderOfMe from "../../OderManagement/Oder/OrderMain";
+import OrderMain from "../../OderManagement/Oder/OrderMain";
 
 const HomeStack = () => {
   const stack = createStackNavigator();
@@ -79,6 +80,12 @@ const HomeStack = () => {
       <stack.Screen
         name="OrderDetail"
         component={OrderDetail}
+        options={{ headerShown: false }}
+      />
+
+      <stack.Screen
+        name="OrderMain"
+        component={OrderMain}
         options={{ headerShown: false }}
       />
 

@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import GreenHeader from "./Header/GreenHeader";
 import { ImagesAssets } from "../Image";
 import { Promo_EV } from "../Data/data";
 import HeaderForStack from "../components/Header/HeaderForStack";
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginVertical: 16,
     flexDirection: "row",
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: "#808080",
   },
   boxMain1: {

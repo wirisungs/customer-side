@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import GreenHeader from './Header/GreenHeader';
+import HeaderForStack from '../components/Header/HeaderForStack';
 import Step3 from './Main/Step3';
 
 export default function CreateStep3({ navigation }) {
   const nameHeader = "Chuyển khoản";
   return (
     <View style={styles.container}>
-        <GreenHeader navigation={navigation} nameHeader={nameHeader}/>
+       <HeaderForStack screenName={"Chuyển khoản"} />
         <Step3  navigation={navigation}/>
     </View>
   );

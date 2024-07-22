@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import GreenHeader from './Header/GreenHeader';
+
 import DetailOrder from './Main/DetailOrder';
 
 export default function OrderDetail({ navigation }) {
