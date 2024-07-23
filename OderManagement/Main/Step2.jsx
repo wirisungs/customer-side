@@ -1,26 +1,41 @@
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
-import { GiaoHang_EV } from '../../Data/data';
+import React, { useState, useEffect } from 'react';
 import { ImagesAssets } from '../../Image';
-import HomeIC from '../Icons/Home';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Step2({ navigation }) {
   const [selectedItem, setSelectedItem] = useState(null);
+  const nameHeader = "Mã giảm giá";
+
+  const [promotions, setPromotions] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://192.168.1.15:3001/api/services');
+        const promotionsData = await response.json();
+        setPromotions(promotionsData);
+      } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <ScrollView  showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.rowallall}>
-          {GiaoHang_EV.map((item, index) => (
+          {promotions.map((item, index) => (
             <TouchableOpacity key={index} onPress={() => setSelectedItem(item)}>
               <View style={styles.rowall}>
                 <View style={styles.rowred} />
                 <View style={styles.rowmain}>
-                  <Text style={styles.text1}>{item.name}</Text>
+                  <Text style={styles.text1}>{item.Name}</Text>
                   <View style={styles.row1}>
-                    <Text style={styles.text2}>Thời gian giao dự kiến: {item.time}</Text>
-                    <Text style={styles.text3}>{item.price}</Text>
+                    <Text style={styles.text2}>Thời gian giao dự kiến: {item.Time}</Text>
+                    <Text style={styles.text3}>{item.Price}</Text>
                   </View>
                 </View>
               </View>
@@ -30,46 +45,44 @@ export default function Step2({ navigation }) {
         <Text style={styles.texttopic1}>Áp dụng mã giảm giá</Text>
         <View style={styles.rowvoucher}>
           <Text style={styles.textTopic}>Chọn mã giảm giá</Text>
-           <TouchableOpacity  style={styles.imgnext} onPress={() => navigation.navigate('VoucherPage')} >
-           <Image
-            source={ImagesAssets.nextright}
-            style={styles.imgnext2}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.imgnext} onPress={() => navigation.navigate('VoucherPage')}>
+            <Image
+              source={ImagesAssets.nextright}
+              style={styles.imgnext2}
+            />
+          </TouchableOpacity>
         </View>
         <Text style={styles.texttopic1}>Hình thức thanh toán</Text>
         <View style={styles.rowvoucher}>
           <Text style={styles.textTopic}>Thanh toán chuyển khoản</Text>
-         
-        <TouchableOpacity  style={styles.imgnext} onPress={() => navigation.navigate('CreateStep3')} >
-          <Image
-            source={ImagesAssets.nextright}
-            style={styles.imgnext2}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.imgnext} onPress={() => navigation.navigate('CreateStep3')}>
+            <Image
+              source={ImagesAssets.nextright}
+              style={styles.imgnext2}
+            />
+          </TouchableOpacity>
         </View>
         <Text style={styles.texttopic1}>Dịch vụ đã chọn</Text>
         <View style={styles.box1}>
           {selectedItem ? (
-            <View >
-              <Text style={styles.namedv}>{selectedItem.name}</Text>
-              <Text style={styles.nametime}>Thời gian dự kiến: {selectedItem.time}</Text>
+            <View>
+              <Text style={styles.namedv}>{selectedItem.Name}</Text>
+              <Text style={styles.nametime}>Thời gian dự kiến: {selectedItem.Time}</Text>
             </View>
           ) : (
             <Text style={styles.namedv}>Chưa chọn dịch vụ</Text>
           )}
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('CreateDone')}>
-        <LinearGradient colors={['#04BF45', '#1C9546']} style={styles.btnsuccess}>
-        <Text style={styles.textbtn}>Hoàn tất</Text>
-        </LinearGradient>
+          <LinearGradient colors={['#04BF45', '#1C9546']} style={styles.btnsuccess}>
+            <Text style={styles.textbtn}>Hoàn tất</Text>
+          </LinearGradient>
         </TouchableOpacity>
-       
-       
       </View>
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

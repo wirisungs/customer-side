@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,12 +8,32 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+
 import { ImagesAssets } from "../Image";
 import { Promo_EV } from "../Data/data";
+// import { API_URL } from '@env';
+
 import HeaderForStack from "../components/Header/HeaderForStack";
 
 export default function Voucher({ navigation }) {
   const nameHeader = "Mã giảm giá";
+
+  const [promotions, setPromotions] = useState([]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://192.168.1.15:3001/api/promotions');
+          const promotionsData = await response.json();
+          setPromotions(promotionsData);
+        } catch (error) {
+          console.error('Lỗi khi lấy dữ liệu:', error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+
   const Search = () => {
     const [text, setText] = useState("");
     return (
@@ -33,12 +53,15 @@ export default function Voucher({ navigation }) {
       </View>
     );
   };
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   return (
     <View style={styles.container}>
       <HeaderForStack screenName={"Mã giảm giá"} />
       <ScrollView>
         <View style={styles.content}>
-          <Text style={styles.text1}>Mã giảm giá</Text>
+          <Text style={styles.text1}>Mã gihiảm giá</Text>
           <Search />
           <View style={styles.box1}>
             <Text style={styles.text2}>
@@ -47,7 +70,7 @@ export default function Voucher({ navigation }) {
             <Text style={styles.text2}>ThienPhucExpress.com/voucher/</Text>
           </View>
           <Text style={styles.text1}>Mã giảm giá của tôi</Text>
-          {Promo_EV.map((item, index) => (
+          {promotions.map((item, index) => (
             <View key={index} style={styles.boxMain}>
               <View style={styles.boxMain1}>
                 <Image source={ImagesAssets.promo} style={styles.imgpromo} />
@@ -58,11 +81,11 @@ export default function Voucher({ navigation }) {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {item.name}
+                  {item.Name}
                 </Text>
                 <Text style={styles.text3}>Lưu ý</Text>
-                <Text style={styles.text3}>{item.note}</Text>
-                <Text style={styles.text3}>{item.note2}</Text>
+                <Text style={styles.text3}>Chỉ áp dụng cho đơn trên {formatPrice(item.PriceOn)}đ</Text>
+                <Text style={styles.text3}>Giảm tối đa {formatPrice(item.Discount)}đ</Text>
               </View>
             </View>
           ))}

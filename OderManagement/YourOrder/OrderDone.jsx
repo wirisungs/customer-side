@@ -10,7 +10,7 @@ export default function OrderDone({ navigation }) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://192.168.1.15:3001/api/promotions');
+          const response = await fetch('http://192.168.1.15:3001/api/orders');
           const promotionsData = await response.json();
           setPromotions(promotionsData);
         } catch (error) {
@@ -35,7 +35,6 @@ export default function OrderDone({ navigation }) {
         );
       };
       const formatPrice = (price) => {
-        // Chuyển đổi số thành chuỗi và thêm dấu chấm phân cách hàng nghìn
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       };
   return (

@@ -8,7 +8,7 @@ export default function OrderGoing({ navigation }) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://192.168.1.15:3001/api/promotions');
+          const response = await fetch('http://192.168.1.15:3001/api/orders');
           const promotionsData = await response.json();
           setPromotions(promotionsData);
         } catch (error) {
