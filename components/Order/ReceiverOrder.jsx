@@ -9,12 +9,7 @@ const ReceiverOrder = () => {
       <View>
         <OrderItem />
       </View>
-      <View>
-        <OrderItem />
-      </View>
-      <View>
-        <OrderItem />
-      </View>
+     
     </View>
   );
 };

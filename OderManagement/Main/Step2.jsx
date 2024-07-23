@@ -12,7 +12,7 @@ export default function Step2({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.1.15:3001/api/services');
+        const response = await fetch('http://10.0.2.2:4001/api/services');
         const promotionsData = await response.json();
         setPromotions(promotionsData);
       } catch (error) {
@@ -22,7 +22,9 @@ export default function Step2({ navigation }) {
 
     fetchData();
   }, []);
-
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -35,7 +37,7 @@ export default function Step2({ navigation }) {
                   <Text style={styles.text1}>{item.Name}</Text>
                   <View style={styles.row1}>
                     <Text style={styles.text2}>Thời gian giao dự kiến: {item.Time}</Text>
-                    <Text style={styles.text3}>{item.Price}</Text>
+                    <Text style={styles.text3}>{formatPrice(item.Price)}đ</Text>
                   </View>
                 </View>
               </View>

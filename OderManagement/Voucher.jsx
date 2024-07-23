@@ -23,7 +23,7 @@ export default function Voucher({ navigation }) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://192.168.1.15:3001/api/promotions');
+          const response = await fetch('http://10.0.2.2:4001/api/promotions');
           const promotionsData = await response.json();
           setPromotions(promotionsData);
         } catch (error) {
