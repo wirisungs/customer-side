@@ -23,7 +23,7 @@ const CheckPost = () => {
             </Text>
           </View>
           <View>
-            <SearchBar />
+            <SearchBar placeholder={"Nhập tên bưu cục"} />
           </View>
         </View>
       </LinearGradient>

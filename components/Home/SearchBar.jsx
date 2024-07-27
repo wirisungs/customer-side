@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, TextInput, Image } from "react-native";
 import "tailwindcss/tailwind.css";
 
-const SearchBar = () => {
+const SearchBar = ({ placeholder }) => {
   const [value, onChangeText] = React.useState("Nhập mã đơn hàng");
   return (
     <View className="flex flex-row items-center w-full" style={styles.shadow}>
@@ -10,7 +10,7 @@ const SearchBar = () => {
         editable
         numberOfLines={1}
         maxLength={10}
-        placeholder="Nhập mã đơn hàng"
+        placeholder={placeholder || "Nhập mã đơn hàng"}
         onChangeText={(text) => onChangeText(text)}
         className="w-full h-[57px] px-6 bg-[#f3f4f6] rounded-3xl"
       />

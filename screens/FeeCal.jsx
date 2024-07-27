@@ -1,5 +1,5 @@
-import React from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, View, Text, Modal } from "react-native";
 import "tailwindcss/tailwind.css";
 import HeaderForStack from "../components/Header/HeaderForStack";
 import DropdownInput from "../components/Input/DropdownInput";
@@ -12,9 +12,23 @@ import Checkbox from "../components/Input/Checkbox";
 import Button from "../components/Buttons/Button";
 
 const FeeCal = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View className="flex flex-1">
       <HeaderForStack screenName="Tra tính cước phí" />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View>
+          <Text>uhfsbegfubu</Text>
+        </View>
+      </Modal>
       <ScrollView className="mt-[6px] p-6 h-full bg-white rounded-3xl">
         <View>
           <View className="content flex flex-col gap-[8px]">
