@@ -68,7 +68,7 @@ export default function Login({ navigation }) {
 
         <TouchableOpacity
           style={styles.btndk}
-          onPress={() => navigation.navigate("RegisterPage")}
+          onPress={() => navigation.navigate("TestPush")}
         >
           <Text style={styles.textdk}>Đăng kí</Text>
         </TouchableOpacity>

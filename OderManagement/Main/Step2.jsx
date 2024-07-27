@@ -12,7 +12,7 @@ export default function Step2({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:4001/api/services');
+        const response = await fetch('http://192.168.1.18:4001/api/store');
         const promotionsData = await response.json();
         setPromotions(promotionsData);
       } catch (error) {

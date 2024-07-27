@@ -14,5 +14,6 @@ export const ImagesAssets = {
     bg:  require('./assets/bg.png'),
     fb:  require('./assets/fb.png'),
     gg:  require('./assets/gg.png'),  
-    back:  require('./assets/back.png'),                                                                                                 
+    back:  require('./assets/back.png'),      
+    banner:  require('./assets/banner.png'),                                                                                           
 };

@@ -23,13 +23,13 @@ export default function Voucher({ navigation }) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://10.0.2.2:4001/api/promotions');
+          const response = await fetch('http://10.0.2.2:4001/api/promotion');
           const promotionsData = await response.json();
           setPromotions(promotionsData);
         } catch (error) {
           console.error('Lỗi khi lấy dữ liệu:', error);
         }
-      };
+      }; //192.168.1.18
   
       fetchData();
     }, []);

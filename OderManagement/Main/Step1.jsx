@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
 import { ImagesAssets } from "../../Image";
 import RNPickerSelect from "react-native-picker-select";
@@ -16,47 +17,137 @@ import Down from "../Icons/Down";
 import Checkbox from "../../components/Input/Checkbox";
 
 export default function Step1({ navigation }) {
-  const units = [
+  const unitsLong = [
     { label: "cm", value: "cm" },
     { label: "dm", value: "dm" },
     { label: "m", value: "m" },
   ];
+  const [selectedUnit, setSelectedUnit] = useState("g");
+  const unitsKL = [
+    { label: "g", value: "g" },
+    { label: "kg", value: "kg" },
+  ];
+  const [number, setNumber] = useState('');
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
+  const [namepro, setNamepro] = useState('');
+  const [kl, setKL] = useState('');
+  const [sl, setSL] = useState('');
+  const [dai, setDai] = useState('');
+  const [rong, setRong] = useState('');
+  const [cao, setCao] = useState('');
+  const [note, setNote] = useState('');
+
+  const [text1, setText1] = useState('');
+  const [text2, setText2] = useState('');
+  const [promotions, setPromotions] = useState([]);
+
+  
+  const generateRandomString = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
+  const generateRandomPrice = () => {
+    return Math.floor(Math.random() * 100000) + 10000; // Tạo giá tiền ngẫu nhiên từ 10,000 đến 110,000
+  };
+
+  const handleSubmit = async () => {
+    if (!number.trim() || !name.trim()) {
+      Alert.alert('Lỗi', 'Bạn cần nhập dữ liệu!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://192.168.1.138:4001/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+         Address: location,
+          Code: generateRandomString(10),
+          Detail: namepro,
+          Price: generateRandomPrice(),
+          ReceiverName: name,
+          SDT: number,
+          KL: kl,
+          SL: sl,
+          Width: rong,
+          Height: cao,
+          Length: dai,
+          Note: note,
+          Status: 'Đang đóng gói',
+          driverID: ""
+        }), 
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Thành công', 'Dữ liệu đã được thêm thành công!');
+        setNumber('');
+        setLocation('');
+        setNamepro('');
+        setName('');
+        setKL('');
+        setSL('');
+        setRong('');
+        setCao('');
+        setDai('');
+        setNote('');
+      } else {
+        Alert.alert('Lỗi', result.error || 'Có lỗi xảy ra khi gửi dữ liệu.');
+      }
+    } catch (error) {
+      console.error('Lỗi khi gửi dữ liệu:', error);
+      Alert.alert('Lỗi', 'Có lỗi xảy ra khi gửi dữ liệu.');
+    }
+  };
+
+  
   const InputSDT = () => {
-    const [text, setText] = useState("");
     return (
       <View style={styles.inputAll}>
         <TextInput
-          onChangeText={setText}
-          value={text}
+          onChangeText={setNumber}
+          value={number}
           placeholder="Số điện thoại"
           style={styles.input}
+        
         />
       </View>
     );
   };
 
   const InputName = () => {
-    const [text, setText] = useState("");
+  
     return (
       <View style={styles.inputAll}>
         <TextInput
-          onChangeText={setText}
-          value={text}
+          onChangeText={setName}
+          value={name}
           placeholder="Họ tên"
           style={styles.input}
         />
       </View>
     );
   };
+  
 
   const InputLocation = () => {
-    const [text, setText] = useState("");
+  
     return (
       <View style={styles.inputAll}>
         <View style={styles.inputContainer}>
           <TextInput
-            onChangeText={setText}
-            value={text}
+            onChangeText={setLocation}
+            value={location}
             placeholder="Địa chỉ"
             style={styles.input}
           />
@@ -72,12 +163,11 @@ export default function Step1({ navigation }) {
   };
 
   const InputTenHang = () => {
-    const [text, setText] = useState("");
     return (
       <View style={styles.inputAll}>
         <TextInput
-          onChangeText={setText}
-          value={text}
+          onChangeText={setNamepro}
+          value={namepro}
           placeholder="Tên hàng"
           style={styles.input}
         />
@@ -86,24 +176,19 @@ export default function Step1({ navigation }) {
   };
 
   const InputKLDonHang = () => {
-    const [text, setText] = useState("");
-    const [selectedUnit, setSelectedUnit] = useState("g");
-    const units = [
-      { label: "g", value: "g" },
-      { label: "kg", value: "kg" },
-    ];
+
     return (
       <View style={styles.inputAll}>
         <View style={styles.inputContainer}>
           <TextInput
-            onChangeText={setText}
-            value={text}
+            onChangeText={setKL}
+            value={kl}
             placeholder="Khối lượng hàng"
             style={styles.input}
           />
           <RNPickerSelect
             onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
+            items={unitsKL}
             style={pickerSelectStyles}
             value={selectedUnit}
             useNativeAndroidPickerStyle={false}
@@ -122,12 +207,11 @@ export default function Step1({ navigation }) {
   };
 
   const InputSoLuong = () => {
-    const [text, setText] = useState("");
     return (
       <View style={styles.inputAll}>
         <TextInput
-          onChangeText={setText}
-          value={text}
+          onChangeText={setSL}
+          value={sl}
           placeholder="Số lượng"
           style={styles.input}
         />
@@ -139,20 +223,19 @@ export default function Step1({ navigation }) {
   };
 
   const InputDai = () => {
-    const [text, setText] = useState("");
     const [selectedUnit, setSelectedUnit] = useState("cm");
     return (
       <View style={styles.inputAll}>
         <View style={styles.inputContainer}>
           <TextInput
-            onChangeText={setText}
-            value={text}
-            placeholder="Chiều cao"
+            onChangeText={setDai}
+            value={dai}
+            placeholder="Chiều dài"
             style={styles.input}
           />
           <RNPickerSelect
             onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
+            items={unitsLong}
             style={pickerSelectStyles}
             value={selectedUnit}
             useNativeAndroidPickerStyle={false}
@@ -166,20 +249,19 @@ export default function Step1({ navigation }) {
   };
 
   const InputRong = () => {
-    const [text, setText] = useState("");
     const [selectedUnit, setSelectedUnit] = useState("cm");
     return (
       <View style={styles.inputAll}>
         <View style={styles.inputContainer}>
           <TextInput
-            onChangeText={setText}
-            value={text}
+            onChangeText={setRong}
+            value={rong}
             placeholder="Chiều rộng"
             style={styles.input}
           />
           <RNPickerSelect
             onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
+            items={unitsLong}
             style={pickerSelectStyles}
             value={selectedUnit}
             useNativeAndroidPickerStyle={false}
@@ -198,21 +280,20 @@ export default function Step1({ navigation }) {
   };
 
   const InputCao = () => {
-    const [text, setText] = useState("");
     const [selectedUnit, setSelectedUnit] = useState("cm");
 
     return (
       <View style={styles.inputAll}>
         <View style={styles.inputContainer}>
           <TextInput
-            onChangeText={setText}
-            value={text}
+            onChangeText={setCao}
+            value={cao}
             placeholder="Chiều cao"
             style={styles.input}
           />
           <RNPickerSelect
             onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
+            items={unitsLong}
             style={pickerSelectStyles}
             value={selectedUnit}
             useNativeAndroidPickerStyle={false}
@@ -231,12 +312,11 @@ export default function Step1({ navigation }) {
   };
 
   const InputNote = () => {
-    const [text, setText] = useState("");
     return (
       <View style={styles.inputAll}>
         <TextInput
-          onChangeText={setText}
-          value={text}
+          onChangeText={setNote}
+          value={note}
           placeholder="Ghi chú"
           style={styles.input}
         />
@@ -269,6 +349,7 @@ export default function Step1({ navigation }) {
           <Text style={styles.text1}>Thông tin người nhận *</Text>
           <InputSDT />
           <InputName />
+          
           <InputLocation />
         </View>
         <View style={styles.row2}>
@@ -288,7 +369,7 @@ export default function Step1({ navigation }) {
           <Checkbox Content={"Thu hộ phí COD"} />
           <Checkbox Content={"Hàng dễ vỡ"} />
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("CreateStep2")}>
+        <TouchableOpacity onPress={handleSubmit}>
           <LinearGradient
             colors={["#04BF45", "#1C9546"]}
             style={styles.btnnext}

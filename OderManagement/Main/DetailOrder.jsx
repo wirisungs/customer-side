@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   all: {
     backgroundColor: "#FFFFFF",
     padding: 24,
-    borderRadius: 20,
+    borderRadius: 24,
     marginVertical: 5,
   },
   all1: {
