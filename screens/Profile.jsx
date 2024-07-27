@@ -104,7 +104,7 @@ const Profile = () => {
             </View>
           </View>
         </View>
-        <Button buttonName={"Đăng xuất"} />
+        <Button buttonName={"Đăng xuất"} screenName={"LoginPage"}/>
       </View>
     </View>
   );

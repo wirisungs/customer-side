@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
 import { ImagesAssets } from "../../Image";
 import RNPickerSelect from "react-native-picker-select";
@@ -16,249 +17,144 @@ import Down from "../Icons/Down";
 import Checkbox from "../../components/Input/Checkbox";
 
 export default function Step1({ navigation }) {
-  const units = [
+  const unitsLong = [
     { label: "cm", value: "cm" },
     { label: "dm", value: "dm" },
     { label: "m", value: "m" },
   ];
-  const InputSDT = () => {
-    const [text, setText] = useState("");
-    return (
-      <View style={styles.inputAll}>
-        <TextInput
-          onChangeText={setText}
-          value={text}
-          placeholder="Số điện thoại"
-          style={styles.input}
-        />
-      </View>
-    );
-  };
+  const [selectedUnitKL, setSelectedUnitKL] = useState("g");
+  const [selectedUnitDai, setSelectedUnitDai] = useState("cm");
+  const [selectedUnitRong, setSelectedUnitRong] = useState("cm");
+  const [selectedUnitCao, setSelectedUnitCao] = useState("cm");
+  const unitsKL = [
+    { label: "g", value: "g" },
+    { label: "kg", value: "kg" },
+  ];
+  const [number, setNumber] = useState('');
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
+  const [namepro, setNamepro] = useState('');
+  const [kl, setKL] = useState('');
+  const [sl, setSL] = useState('');
+  const [dai, setDai] = useState('');
+  const [rong, setRong] = useState('');
+  const [cao, setCao] = useState('');
+  const [note, setNote] = useState('');
 
-  const InputName = () => {
-    const [text, setText] = useState("");
-    return (
-      <View style={styles.inputAll}>
-        <TextInput
-          onChangeText={setText}
-          value={text}
-          placeholder="Họ tên"
-          style={styles.input}
-        />
-      </View>
-    );
-  };
+  const [text1, setText1] = useState('');
+  const [text2, setText2] = useState('');
+  const [promotions, setPromotions] = useState([]);
 
-  const InputLocation = () => {
-    const [text, setText] = useState("");
-    return (
-      <View style={styles.inputAll}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            onChangeText={setText}
-            value={text}
-            placeholder="Địa chỉ"
-            style={styles.input}
-          />
-          <TouchableOpacity style={styles.imageContainer}>
-            <Image source={ImagesAssets.Map} style={styles.imgMap} />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.textnote}>
-          Lưu ý: Không được để trống bất kì ô nào
-        </Text>
-      </View>
-    );
-  };
-
-  const InputTenHang = () => {
-    const [text, setText] = useState("");
-    return (
-      <View style={styles.inputAll}>
-        <TextInput
-          onChangeText={setText}
-          value={text}
-          placeholder="Tên hàng"
-          style={styles.input}
-        />
-      </View>
-    );
-  };
-
-  const InputKLDonHang = () => {
-    const [text, setText] = useState("");
-    const [selectedUnit, setSelectedUnit] = useState("g");
-    const units = [
-      { label: "g", value: "g" },
-      { label: "kg", value: "kg" },
-    ];
-    return (
-      <View style={styles.inputAll}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            onChangeText={setText}
-            value={text}
-            placeholder="Khối lượng hàng"
-            style={styles.input}
-          />
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
-            style={pickerSelectStyles}
-            value={selectedUnit}
-            useNativeAndroidPickerStyle={false}
-            Icon={() => {
-              return (
-                <Image
-                  source={ImagesAssets.BackDown}
-                  style={styles.arrowIcon}
-                />
-              );
-            }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const InputSoLuong = () => {
-    const [text, setText] = useState("");
-    return (
-      <View style={styles.inputAll}>
-        <TextInput
-          onChangeText={setText}
-          value={text}
-          placeholder="Số lượng"
-          style={styles.input}
-        />
-        <View style={styles.viewadd}>
-          <Text style={styles.textadd}>Thêm hàng</Text>
-        </View>
-      </View>
-    );
-  };
-
-  const InputDai = () => {
-    const [text, setText] = useState("");
-    const [selectedUnit, setSelectedUnit] = useState("cm");
-    return (
-      <View style={styles.inputAll}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            onChangeText={setText}
-            value={text}
-            placeholder="Chiều cao"
-            style={styles.input}
-          />
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
-            style={pickerSelectStyles}
-            value={selectedUnit}
-            useNativeAndroidPickerStyle={false}
-            Icon={() => {
-              return <Down />;
-            }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const InputRong = () => {
-    const [text, setText] = useState("");
-    const [selectedUnit, setSelectedUnit] = useState("cm");
-    return (
-      <View style={styles.inputAll}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            onChangeText={setText}
-            value={text}
-            placeholder="Chiều rộng"
-            style={styles.input}
-          />
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
-            style={pickerSelectStyles}
-            value={selectedUnit}
-            useNativeAndroidPickerStyle={false}
-            Icon={() => {
-              return (
-                <Image
-                  source={ImagesAssets.BackDown}
-                  style={styles.arrowIcon}
-                />
-              );
-            }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const InputCao = () => {
-    const [text, setText] = useState("");
-    const [selectedUnit, setSelectedUnit] = useState("cm");
-
-    return (
-      <View style={styles.inputAll}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            onChangeText={setText}
-            value={text}
-            placeholder="Chiều cao"
-            style={styles.input}
-          />
-          <RNPickerSelect
-            onValueChange={(value) => setSelectedUnit(value)}
-            items={units}
-            style={pickerSelectStyles}
-            value={selectedUnit}
-            useNativeAndroidPickerStyle={false}
-            Icon={() => {
-              return (
-                <Image
-                  source={ImagesAssets.BackDown}
-                  style={styles.arrowIcon}
-                />
-              );
-            }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const InputNote = () => {
-    const [text, setText] = useState("");
-    return (
-      <View style={styles.inputAll}>
-        <TextInput
-          onChangeText={setText}
-          value={text}
-          placeholder="Ghi chú"
-          style={styles.input}
-        />
-        <Text style={styles.textnote}>Không bắt buộc</Text>
-      </View>
-    );
-  };
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedItems1, setSelectedItems1] = useState([]);
-  const handleCheckboxChange = (item) => {
-    if (selectedItems.includes(item)) {
-      setSelectedItems(selectedItems.filter((i) => i !== item));
-    } else {
-      setSelectedItems([...selectedItems, item]);
+  const changeKL = () => {
+    let result;
+    if (selectedUnitKL == "g") {
+      result = kl * 1
+    } else if (selectedUnitKL == "kg") {
+      result = kl * 1000
     }
+    return result;
   };
 
-  const handleCheckboxChange1 = (item) => {
-    if (selectedItems.includes(item)) {
-      setSelectedItems1(selectedItems1.filter((i) => i !== item));
-    } else {
-      setSelectedItems1([...selectedItems1, item]);
+  const changeDai = () => {
+    let result;
+    if (selectedUnitDai == "cm") {
+      result = dai * 1
+    } else if (selectedUnitDai == "dm") {
+      result = dai * 10
+    } else if (selectedUnitDai == "m") {
+      result = dai * 100
+    }
+    return result;
+  };
+
+  const changeRong = () => {
+    let result;
+    if (selectedUnitRong == "cm") {
+      result = rong * 1
+    } else if (selectedUnitRong == "dm") {
+      result = rong * 10
+    } else if (selectedUnitRong == "m") {
+      result = rong * 100
+    }
+    return result;
+  };
+
+  const changeCao = () => {
+    let result;
+    if (selectedUnitCao == "cm") {
+      result = cao * 1
+    } else if (selectedUnitCao == "dm") {
+      result = cao * 10
+    } else if (selectedUnitCao == "m") {
+      result = cao * 100
+    }
+    return result;
+  };
+
+  const generateRandomString = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
+  const generateRandomPrice = () => {
+    return Math.floor(Math.random() * 100000) + 10000;
+  };
+
+  const handleSubmit = async () => {
+    if (!number.trim() || !name.trim()) {
+      Alert.alert('Lỗi', 'Bạn cần nhập dữ liệu!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://10.0.2.2:4001/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Address: location,
+          Code: generateRandomString(10),
+          Detail: namepro,
+          Price: generateRandomPrice(),
+          ReceiverName: name,
+          SDT: number,
+          KL: changeKL(),
+          SL: sl,
+          Width: changeRong(),
+          Height: changeCao(),
+          Length: changeDai(),
+          Note: note,
+          Status: 'Chờ vận chuyển',
+          driverID: ""
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Thành công', 'Dữ liệu đã được thêm thành công!');
+        setNumber('');
+        setLocation('');
+        setNamepro('');
+        setName('');
+        setKL('');
+        setSL('');
+        setRong('');
+        setCao('');
+        setDai('');
+        setNote('');
+      } else {
+        Alert.alert('Lỗi', result.error || 'Có lỗi xảy ra khi gửi dữ liệu.');
+      }
+    } catch (error) {
+      console.error('Lỗi khi gửi dữ liệu:', error);
+      Alert.alert('Lỗi', 'Có lỗi xảy ra khi gửi dữ liệu.');
     }
   };
 
@@ -267,28 +163,156 @@ export default function Step1({ navigation }) {
       <ScrollView>
         <View style={styles.row1}>
           <Text style={styles.text1}>Thông tin người nhận *</Text>
-          <InputSDT />
-          <InputName />
-          <InputLocation />
+          <View style={styles.inputAll}>
+            <TextInput
+              onChangeText={setNumber}
+              value={number}
+              placeholder="Số điện thoại"
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.inputAll}>
+            <TextInput
+              onChangeText={setName}
+              value={name}
+              placeholder="Họ tên"
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.inputAll}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={setLocation}
+                value={location}
+                placeholder="Địa chỉ"
+                style={styles.input}
+              />
+              <TouchableOpacity style={styles.imageContainer}>
+                <Image source={ImagesAssets.Map} style={styles.imgMap} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.textnote}>
+              Lưu ý: Không được để trống bất kì ô nào
+            </Text>
+          </View>
         </View>
         <View style={styles.row2}>
           <Text style={styles.text1}>Thông tin đơn hàng *</Text>
-          <InputTenHang />
-          <InputKLDonHang />
-          <InputSoLuong />
+          <View style={styles.inputAll}>
+            <TextInput
+              onChangeText={setNamepro}
+              value={namepro}
+              placeholder="Tên hàng"
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.inputAll}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={setKL}
+                value={kl}
+                placeholder="Khối lượng hàng"
+                style={styles.input}
+              />
+              <RNPickerSelect
+                onValueChange={(value) => setSelectedUnitKL(value)}
+                items={unitsKL}
+                style={pickerSelectStyles}
+                value={selectedUnitKL}
+                useNativeAndroidPickerStyle={false}
+                Icon={() => {
+                  return <Down />;
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.inputAll}>
+            <TextInput
+              onChangeText={setSL}
+              value={sl}
+              placeholder="Số lượng"
+              style={styles.input}
+            />
+            <View style={styles.viewadd}>
+              <Text style={styles.textadd}>Thêm hàng</Text>
+            </View>
+          </View>
         </View>
         <View style={styles.row1}>
           <Text style={styles.text1}>Thông tin tổng kiện hàng *</Text>
-          <InputDai />
-          <InputRong />
-          <InputCao />
-          <InputNote />
+          <View style={styles.inputAll}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={setDai}
+                value={dai}
+                placeholder="Chiều dài"
+                style={styles.input}
+              />
+              <RNPickerSelect
+                onValueChange={(value) => setSelectedUnitDai(value)}
+                items={unitsLong}
+                style={pickerSelectStyles}
+                value={selectedUnitDai}
+                useNativeAndroidPickerStyle={false}
+                Icon={() => {
+                  return <Down />;
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.inputAll}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={setRong}
+                value={rong}
+                placeholder="Chiều rộng"
+                style={styles.input}
+              />
+              <RNPickerSelect
+                onValueChange={(value) => setSelectedUnitRong(value)}
+                items={unitsLong}
+                style={pickerSelectStyles}
+                value={selectedUnitRong}
+                useNativeAndroidPickerStyle={false}
+                Icon={() => {
+                  return <Down />;
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.inputAll}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={setCao}
+                value={cao}
+                placeholder="Chiều cao"
+                style={styles.input}
+              />
+              <RNPickerSelect
+                onValueChange={(value) => setSelectedUnitCao(value)}
+                items={unitsLong}
+                style={pickerSelectStyles}
+                value={selectedUnitCao}
+                useNativeAndroidPickerStyle={false}
+                Icon={() => {
+                  return <Down />;
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.inputAll}>
+            <TextInput
+              onChangeText={setNote}
+              value={note}
+              placeholder="Ghi chú"
+              style={styles.input}
+            />
+          </View>
+          <Text style={styles.textnote}>
+            Lưu ý: Không được để trống bất kì ô nào
+          </Text>
         </View>
-        <View style={styles.cb1}>
-          <Checkbox Content={"Thu hộ phí COD"} />
-          <Checkbox Content={"Hàng dễ vỡ"} />
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate("CreateStep2")}>
+        <TouchableOpacity onPress={handleSubmit}>
           <LinearGradient
             colors={["#04BF45", "#1C9546"]}
             style={styles.btnnext}
@@ -300,12 +324,11 @@ export default function Step1({ navigation }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    // bottom:50
+    // bottom: -50
   },
   row1: {
     padding: 24,
@@ -399,29 +422,20 @@ const styles = StyleSheet.create({
 });
 
 const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "#E2E2E2",
-    borderRadius: 20,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-    backgroundColor: "#04BF45",
-  },
   inputAndroid: {
     fontSize: 16,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    paddingHorizontal: 24,
+    paddingVertical: 13,
+    borderTopRightRadius: 24,
+    borderBottomRightRadius: 24,
     color: "#ffffff",
-    paddingRight: 30,
+    paddingHorizontal: 24,
     backgroundColor: "#04BF45",
+    fontWeight: 'bold',
+    // textAlign: 'left' // Thêm dòng này
   },
   iconContainer: {
-    top: 10,
-    right: 12,
+    marginTop: 12,
   },
 });
+

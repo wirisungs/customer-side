@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text,Image } from "react-native";
 import Slider from "./Slider";
 import "tailwindcss/tailwind.css";
+import { ImagesAssets } from "../../Image";
 
 const News = () => {
   return (
@@ -10,6 +11,7 @@ const News = () => {
         <Text className="mt-6" style={styles.head2}>
           Tin tức
         </Text>
+        <Image source={ImagesAssets.banner} resizeMode="cover" style={styles.imgcopy} />
       </View>
       <View className="py-0 w-full">
         <Slider className="w-full" />
@@ -24,6 +26,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1c1c1c",
   },
+  imgcopy:{
+    width: '100%',      
+    height: 200,        
+    borderRadius: 10,   
+    overflow: 'hidden',  
+  }
 });
 
 export default News;

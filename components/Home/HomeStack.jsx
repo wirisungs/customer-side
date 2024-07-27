@@ -20,6 +20,7 @@ import Voucher from "../../OderManagement/Voucher";
 import More from "../../OderManagement/map";
 import OrderOfMe from "../../OderManagement/Oder/OrderMain";
 import OrderMain from "../../OderManagement/Oder/OrderMain";
+import TestPush from "../../OderManagement/Auth/Test";
 
 const HomeStack = () => {
   const stack = createStackNavigator();
@@ -130,6 +131,11 @@ const HomeStack = () => {
       <stack.Screen
         name="CheckPost"
         component={CheckPost}
+        options={{ headerShown: false }}
+      />
+       <stack.Screen
+        name="TestPush"
+        component={TestPush}
         options={{ headerShown: false }}
       />
     </stack.Navigator>
