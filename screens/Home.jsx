@@ -15,7 +15,8 @@ import SearchBar from "../components/Home/SearchBar";
 import ServiceBtn from "../components/Home/ServiceBtn";
 import News from "../components/Home/News";
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation,route }) => {
+  const { phone } = route.params;
   const title = "Trang chủ";
   return (
     <View className="relative bg-[#fefefe] h-[100%]">
@@ -26,6 +27,7 @@ const Home = ({ navigation }) => {
         </View>
         <View className>
           <ServiceBtn />
+          {/* <Text>{phone}</Text> */}
         </View>
         <News />
       </ScrollView>

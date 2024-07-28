@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from "react-native";
 import Home from "../../screens/Home";
 import Profile from "../../screens/Profile";
@@ -20,14 +20,43 @@ import Voucher from "../../OderManagement/Voucher";
 import More from "../../OderManagement/map";
 import OrderOfMe from "../../OderManagement/Oder/OrderMain";
 import OrderMain from "../../OderManagement/Oder/OrderMain";
-import TestPush from "../../OderManagement/Auth/Test";
+import TestPush from "../../OderManagement/Main/Mess";
+
+import {app} from '../../firebase/firebaseConfig'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+const auth = getAuth(app);
 
 const HomeStack = () => {
   const stack = createStackNavigator();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error.message);
+    }
+  };
   return (
-    <stack.Navigator>
+    <stack.Navigator initialRouteName="LoginPage">
       {/* Auth Stack */}
 
+      <stack.Screen
+        name="Home"
+        // component={RouteManager}
+        options={{ headerShown: false }}
+      >
+       {props => <RouteManager {...props} user={user} onLogout={handleLogout} />}
+      </stack.Screen>
       <stack.Screen
         name="LoginPage"
         component={Login}
@@ -105,14 +134,10 @@ const HomeStack = () => {
       <stack.Screen
         name="OrderOfMe"
         component={OrderOfMe}
-        options={{ headerShown: false }}
+        options={{ headerShown: false }}  // {props => <Home {...props} user={user} onLogout={handleLogout} />}
       />
 
-      <stack.Screen
-        name="Home"
-        component={RouteManager}
-        options={{ headerShown: false }}
-      />
+     
       <stack.Screen
         name="Profile"
         component={Profile}

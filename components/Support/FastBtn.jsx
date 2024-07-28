@@ -1,8 +1,11 @@
 import React from "react";
+import { Touchable } from "react-native";
 import { StyleSheet, View, Text } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import "tailwindcss/tailwind.css";
 
-const FastBtn = () => {
+const FastBtn = ({navigation,route}) => {
+  const { phone } = route.params;
   return (
     <View className="flex pt-12 pb-6 px-6 m-0 bg-[#D5F3DF]">
       <View className="FastBtnContainer flex flex-col w-full h-auto gap-y-[6px]">
@@ -24,7 +27,10 @@ const FastBtn = () => {
           style={styles.shadow}
           className="mt-0 ml-0 flex items-center justify-center bg-white h-16 rounded-b-3xl"
         >
+          <TouchableOpacity  onPress={() => navigation.navigate("TestPush",{phone})}>
           <Text>Nhắn tin với nhân viên hỗ trợ</Text>
+          </TouchableOpacity>
+        
         </View>
       </View>
     </View>

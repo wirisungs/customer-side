@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 import { ImagesAssets } from "../Image";
-import { Promo_EV } from "../Data/data";
 // import { API_URL } from '@env';
 
 import HeaderForStack from "../components/Header/HeaderForStack";
@@ -61,7 +60,7 @@ export default function Voucher({ navigation }) {
       <HeaderForStack screenName={"Mã giảm giá"} />
       <ScrollView>
         <View style={styles.content}>
-          <Text style={styles.text1}>Mã gihiảm giá</Text>
+          <Text style={styles.text1}>Mã giảm giá</Text>
           <Search />
           <View style={styles.box1}>
             <Text style={styles.text2}>
@@ -85,7 +84,7 @@ export default function Voucher({ navigation }) {
                 </Text>
                 <Text style={styles.text3}>Lưu ý</Text>
                 <Text style={styles.text3}>Chỉ áp dụng cho đơn trên {formatPrice(item.PriceOn)}đ</Text>
-                <Text style={styles.text3}>Giảm tối đa {formatPrice(item.Discount)}đ</Text>
+                <Text style={styles.text3}>Giảm {formatPrice(item.Discount)}đ</Text>
               </View>
             </View>
           ))}

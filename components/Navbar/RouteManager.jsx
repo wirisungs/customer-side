@@ -31,7 +31,8 @@ const createOrderName = "Lên đơn";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-const RouteManager = () => {
+const RouteManager = ({route}) => {
+  const { phone } = route.params || {};
   return (
     <Tab.Navigator
       screenOptions={{
@@ -48,6 +49,7 @@ const RouteManager = () => {
       <Tab.Screen
         name={homeName}
         component={Home}
+        initialParams={{ phone }}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
             <View className="flex flex-col items-center gap-[6px]">
@@ -121,6 +123,7 @@ const RouteManager = () => {
       <Tab.Screen
         name={supportName}
         component={Support}
+        initialParams={{ phone }}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
             <View className="flex flex-col items-center gap-[6px]">
