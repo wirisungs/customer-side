@@ -2,12 +2,13 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'rea
 import React, { useState, useEffect } from 'react';
 import { ImagesAssets } from '../../Image';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRoute } from "@react-navigation/native";
 
 export default function Step2({ navigation }) {
+  const route = useRoute();
   const [selectedItem, setSelectedItem] = useState(null);
-  const nameHeader = "Mã giảm giá";
-
   const [promotions, setPromotions] = useState([]);
+  const { number, name, namepro, kl, sl, dai, rong, cao, note, phone, location, GHTKCost, GHNCost, GHTLCost, GHTPCost } = route.params;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,9 +23,26 @@ export default function Step2({ navigation }) {
 
     fetchData();
   }, []);
+
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+
+  const getCost = (name) => {
+    switch (name) {
+      case "Giao hàng tiết kiệm":
+        return formatPrice(GHTKCost);
+      case "Giao hàng nhanh":
+        return formatPrice(GHNCost);
+      case "Giao hàng tên lửa":
+        return formatPrice(GHTLCost);
+      case "Thiên Phúc giao hàng":
+        return formatPrice(GHTPCost);
+      default:
+        return "";
+    }
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -37,7 +55,7 @@ export default function Step2({ navigation }) {
                   <Text style={styles.text1}>{item.Name}</Text>
                   <View style={styles.row1}>
                     <Text style={styles.text2}>Thời gian giao dự kiến: {item.Time}</Text>
-                    <Text style={styles.text3}>{formatPrice(item.Price)}đ</Text>
+                    <Text style={styles.text3}>{getCost(item.Name)}đ</Text>
                   </View>
                 </View>
               </View>
@@ -45,6 +63,18 @@ export default function Step2({ navigation }) {
           ))}
         </View>
         <Text style={styles.texttopic1}>Áp dụng mã giảm giá</Text>
+        <Text style={styles.texttopic1}>{number}</Text>
+        <Text style={styles.texttopic1}>{name}</Text>
+        <Text style={styles.texttopic1}>{namepro}</Text>
+        <Text style={styles.texttopic1}>{kl}</Text>
+        <Text style={styles.texttopic1}>{sl}</Text>
+        <Text style={styles.texttopic1}>{dai}</Text>
+        <Text style={styles.texttopic1}>{rong}</Text>
+        <Text style={styles.texttopic1}>{cao}</Text>
+        <Text style={styles.texttopic1}>{note}</Text>
+        <Text style={styles.texttopic1}>{phone}</Text>
+        <Text style={styles.texttopic1}>{location}</Text>
+
         <View style={styles.rowvoucher}>
           <Text style={styles.textTopic}>Chọn mã giảm giá</Text>
           <TouchableOpacity style={styles.imgnext} onPress={() => navigation.navigate('VoucherPage')}>
@@ -85,7 +115,6 @@ export default function Step2({ navigation }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -107,11 +136,11 @@ const styles = StyleSheet.create({
   },
   rowall: {
     flexDirection: 'row',
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   rowred: {
     backgroundColor: '#F91313',
-    width: '4%', 
+    width: '4%',
     height: '100%',
     borderBottomLeftRadius: 20,
     borderTopLeftRadius: 20,
@@ -126,62 +155,62 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
-  texttopic1:{
+  texttopic1: {
     fontSize: 20,
-    fontWeight:'700',
-    marginVertical:24,
-    color:'#1C1C1C'
+    fontWeight: '700',
+    marginVertical: 24,
+    color: '#1C1C1C',
   },
-  textTopic:{
+  textTopic: {
     borderWidth: 1,
-    borderColor:'#E2E2E2',
+    borderColor: '#E2E2E2',
     padding: 20,
     borderRadius: 26,
-    color:'#808080',
-    fontWeight:'400',
-    fontSize:16,
-    width: '100%'
+    color: '#808080',
+    fontWeight: '400',
+    fontSize: 16,
+    width: '100%',
   },
-  rowvoucher:{
-    flexDirection:'row',
+  rowvoucher: {
+    flexDirection: 'row',
     // marginBottom:24
   },
-  imgnext:{
-    height:'20%',
-    width:'3%',
-    position:'absolute',
+  imgnext: {
+    height: '20%',
+    width: '3%',
+    position: 'absolute',
     right: 20,
-    top:25
+    top: 25,
   },
-  imgnext2:{
-    height:'100%',
-    width:'100%',
+  imgnext2: {
+    height: '100%',
+    width: '100%',
   },
   namedv: {
     fontSize: 14,
     fontWeight: '600',
     color: '#1C1C1C',
   },
-  nametime:{
+  nametime: {
     fontSize: 10,
-    marginTop: 10
+    marginTop: 10,
   },
-  box1:{
+  box1: {
     borderWidth: 1,
-    borderColor:'#03A63C',
-    padding:24,
-    borderRadius:20,
-    borderStyle:'dotted'
-  },
-  btnsuccess:{
-    padding:20,
-    marginVertical:16,
+    borderColor: '#03A63C',
+    padding: 24,
     borderRadius: 20,
-    alignItems:'center'
+    borderStyle: 'dotted',
   },
-  textbtn:{
+  btnsuccess: {
+    padding: 20,
+    marginVertical: 16,
+    borderRadius: 20,
+    alignItems: 'center',
+  },
+  textbtn: {
     fontSize: 20,
-    fontWeight:'600',
-    color:'#ffffff'
-  }
+    fontWeight: '600',
+    color: '#ffffff',
+  },
 });

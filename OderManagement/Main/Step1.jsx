@@ -16,7 +16,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import Down from "../Icons/Down";
 import Checkbox from "../../components/Input/Checkbox";
 
-export default function Step1({ navigation }) {
+export default function Step1({ navigation,phone }) {
+  // const { phone } = route.params || {};
   const unitsLong = [
     { label: "cm", value: "cm" },
     { label: "dm", value: "dm" },
@@ -33,6 +34,7 @@ export default function Step1({ navigation }) {
   const [number, setNumber] = useState('');
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
+  const [locationsend, setLocationSend] = useState('');
   const [namepro, setNamepro] = useState('');
   const [kl, setKL] = useState('');
   const [sl, setSL] = useState('');
@@ -131,7 +133,8 @@ export default function Step1({ navigation }) {
           Length: changeDai(),
           Note: note,
           Status: 'Chờ vận chuyển',
-          driverID: ""
+          driverID: "",
+          Email: phone
         }),
       });
 
@@ -161,6 +164,26 @@ export default function Step1({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView>
+      <View style={styles.row1}>
+          <Text style={styles.text1}>Thông tin người gửi *</Text>
+    
+          <View style={styles.inputAll}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                onChangeText={setLocationSend}
+                value={locationsend}
+                placeholder="Địa chỉ"
+                style={styles.input}
+              />
+              <TouchableOpacity style={styles.imageContainer}>
+                <Image source={ImagesAssets.Map} style={styles.imgMap} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.textnote}>
+              Lưu ý: Không được để trống bất kì ô nào
+            </Text>
+          </View>
+        </View>
         <View style={styles.row1}>
           <Text style={styles.text1}>Thông tin người nhận *</Text>
           <View style={styles.inputAll}>
@@ -312,7 +335,28 @@ export default function Step1({ navigation }) {
             Lưu ý: Không được để trống bất kì ô nào
           </Text>
         </View>
-        <TouchableOpacity onPress={handleSubmit}>
+        {/* <TouchableOpacity onPress={handleSubmit}>
+          <LinearGradient
+            colors={["#04BF45", "#1C9546"]}
+            style={styles.btnnext}
+          >
+            <Text style={styles.textnext}>Tiếp theo</Text>
+          </LinearGradient>
+        </TouchableOpacity> */}
+         <TouchableOpacity onPress={() => navigation.navigate('TraCuocPhi',{
+                                                                             location,
+                                                                             locationsend,
+                                                                             number,
+                                                                             name,
+                                                                             namepro,
+                                                                             kl,
+                                                                             sl,
+                                                                             dai,
+                                                                             rong,
+                                                                             cao,
+                                                                             note,
+                                                                             phone
+                                                                             })}>
           <LinearGradient
             colors={["#04BF45", "#1C9546"]}
             style={styles.btnnext}

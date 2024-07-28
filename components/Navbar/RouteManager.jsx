@@ -88,6 +88,7 @@ const RouteManager = ({route}) => {
       <Tab.Screen
         name={createOrderName}
         component={CreateStep1}
+        initialParams={{ phone }}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
             <LinearGradient

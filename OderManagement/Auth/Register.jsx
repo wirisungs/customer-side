@@ -33,7 +33,7 @@ export default function Register({ navigation }) {
       }
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        navigation.navigate('Home');
+        navigation.navigate('LoginPage');
       } catch (error) {
         console.error('Registration error:', error.message);
         Alert.alert('Registration failed!', 'Please try again.');

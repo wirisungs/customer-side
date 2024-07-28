@@ -19,12 +19,26 @@ import Checkbox from "../components/Input/Checkbox";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 
-const FeeCal = () => {
-  const [addressPickup, setAddressPickup] = useState("");
-  const [addressDrop, setAddressDrop] = useState("");
+const FeeCal = ({route}) => {
+  const { location,
+    locationsend, 
+    number,
+    name,
+    namepro,
+    kl,
+    sl,
+    dai,
+    rong,
+    cao,
+    note,
+    phone 
+  } = route.params || {};
+  const [addressPickup, setAddressPickup] = useState(locationsend || "");
+  const [addressDrop, setAddressDrop] =useState(location || "");
   const [coordinatesPickup, setCoordinatesPickup] = useState([]);
   const [coordinatesDrop, setCoordinatesDrop] = useState([]);
-
+ 
+  const {  } = route.params || {};
   // Kết quả tính
   const [GHTKCost, setGHTKCost] = useState(null);
   const [GHNCost, setGHNCost] = useState(null);
@@ -38,8 +52,22 @@ const FeeCal = () => {
   const navigation = useNavigation();
 
   const handleNavigation = (costs) => {
-    navigation.navigate("Service", costs);
+    navigation.navigate("CreateStep2", {
+      ...costs,
+      number,
+      name,
+      namepro,
+      kl,
+      sl,
+      dai,
+      rong,
+      cao,
+      note,
+      phone,
+      location
+    });
   };
+  
 
   const handleSearch = async () => {
     if (addressPickup === "" || addressDrop === "") {
@@ -174,6 +202,8 @@ const FeeCal = () => {
           <View className="content flex flex-col gap-[8px]">
             <View className="flex flex-row title">
               <Text style={styles.header3}>Khoảng cách</Text>
+              {/* <Text style={styles.header3}>{name}</Text>
+              <Text style={styles.header3}>{namepro}</Text> */}
               <Text className="ml-2 text-[20px] text-[#BF0A04]">*</Text>
             </View>
             <View className="inputContainer flex flex-rol">
@@ -184,6 +214,7 @@ const FeeCal = () => {
                 <View className=" flex flex-row items-center border-solid border-2 border-[#e2e2e2] rounded-2xl w-full p-3 mt-[6px] ">
                   <TextInput
                     placeholder={"Tỉnh / Thành / Quận / Huyện"}
+                    value={addressPickup}
                     onChangeText={setAddressPickup}
                   />
                 </View>
@@ -217,6 +248,7 @@ const FeeCal = () => {
                 <View className=" flex flex-row items-center border-solid border-2 border-[#e2e2e2] rounded-2xl w-full p-3 mt-[6px] ">
                   <TextInput
                     placeholder={"Tỉnh / Thành / Quận / Huyện"}
+                    value={addressDrop}
                     onChangeText={setAddressDrop}
                   />
                 </View>

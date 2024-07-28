@@ -14,7 +14,9 @@ const Service = () => {
   const GHNCost = route.params.GHNCost;
   const GHTLCost = route.params.GHTLCost;
   const GHTPCost = route.params.GHTPCost;
-
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   return (
     <View>
       <HeaderForStack screenName={"Dịch vụ"} />
@@ -28,28 +30,28 @@ const Service = () => {
               <ServiceBtn
                 nameService={"Giao hàng tiết kiệm"}
                 timeLine={"5-6"}
-                Price={GHTKCost}
+                Price={formatPrice(GHTKCost)}
               />
             </View>
             <View>
               <ServiceBtn
                 nameService={"Giao hàng nhanh"}
                 timeLine={"2-3"}
-                Price={GHNCost}
+                Price={formatPrice(GHNCost)}
               />
             </View>
             <View>
               <ServiceBtn
                 nameService={"Giao tên lửa"}
                 timeLine={"trong"}
-                Price={GHTLCost}
+                Price={formatPrice(GHTLCost)}
               />
             </View>
             <View>
               <ServiceBtn
                 nameService={"Giao hàng Thiên Phúc"}
                 timeLine={"trong"}
-                Price={GHTPCost}
+                Price={formatPrice(GHTPCost)}
               />
             </View>
           </View>
