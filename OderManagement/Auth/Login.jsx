@@ -12,10 +12,31 @@ import { LinearGradient } from "expo-linear-gradient";
 import CheckBox from "react-native-check-box";
 import { ImagesAssets } from "../../Image";
 import Checkbox from "../../components/Input/Checkbox";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Login({ navigation }) {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+  const auth = getAuth();
+
+  const handleAuthentication = async () => {
+    try {
+      if (isLogin) {
+        // Sign in
+        await signInWithEmailAndPassword(auth, phone, password);
+        navigation.navigate('Home',{phone});
+        
+      } else {
+        // Sign up
+        await createUserWithEmailAndPassword(auth, phone, password);
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.error('Authentication error:', error.message);
+      alert('Authentication failed! Please try again.');
+    }
+  };
 
   return (
     <View>
@@ -32,7 +53,7 @@ export default function Login({ navigation }) {
             <TextInput
               onChangeText={setPhone}
               value={phone}
-              placeholder="Số điện thoại"
+              placeholder="Email"
               style={styles.numberPhone}
               keyboardType="email-address"
             />
@@ -56,7 +77,7 @@ export default function Login({ navigation }) {
 
         <TouchableOpacity
           style={styles.btnAll}
-          onPress={() => navigation.navigate("Home", { phone })}
+          onPress={handleAuthentication}
         >
           <LinearGradient
             colors={["#04BF45", "#1C9546"]}
@@ -68,7 +89,7 @@ export default function Login({ navigation }) {
 
         <TouchableOpacity
           style={styles.btndk}
-          onPress={() => navigation.navigate("TestPush")}
+          onPress={() => navigation.navigate("RegisterPage")}
         >
           <Text style={styles.textdk}>Đăng kí</Text>
         </TouchableOpacity>

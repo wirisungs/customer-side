@@ -11,33 +11,34 @@ import {
 import CheckBox from "react-native-check-box";
 import { LinearGradient } from "expo-linear-gradient";
 import Checkbox from "../../components/Input/Checkbox";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Register({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [name, setName] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
-  //   const auth = getAuth();
+    const auth = getAuth();
 
-  //   const handleRegister = async () => {
-  //     if (password !== repassword) {
-  //       Alert.alert('Error', 'Mật khẩu và nhập lại mật khẩu không khớp!');
-  //       return;
-  //     }
-  //     if (!isChecked) {
-  //       Alert.alert('Error', 'Bạn phải đồng ý với điều khoản sử dụng!');
-  //       return;
-  //     }
-  //     try {
-  //       await createUserWithEmailAndPassword(auth, email, password);
-  //       navigation.navigate('Home');
-  //     } catch (error) {
-  //       console.error('Registration error:', error.message);
-  //       Alert.alert('Registration failed!', 'Please try again.');
-  //     }
-  //   };
+    const handleRegister = async () => {
+      if (password !== repassword) {
+        Alert.alert('Error', 'Mật khẩu và nhập lại mật khẩu không khớp!');
+        return;
+      }
+      if (!isChecked) {
+        Alert.alert('Error', 'Bạn phải đồng ý với điều khoản sử dụng!');
+        return;
+      }
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        navigation.navigate('Home');
+      } catch (error) {
+        console.error('Registration error:', error.message);
+        Alert.alert('Registration failed!', 'Please try again.');
+      }
+    };
 
   return (
     <View style={styles.container}>
@@ -59,7 +60,7 @@ export default function Register({ navigation }) {
           <TextInput
             onChangeText={setEmail}
             value={email}
-            placeholder="Số điện thoại"
+            placeholder="Email"
             style={styles.numberPhone}
             keyboardType="email-address"
           />
@@ -85,13 +86,15 @@ export default function Register({ navigation }) {
       </View>
       <View style={styles.checkboxContainer}>
         <Checkbox
+          isChecked={isChecked}
+          onClick={() => setIsChecked(!isChecked)}
           Content={"Đồng ý với điều khoản và điều kiện của chúng tôi"}
         />
       </View>
 
       <TouchableOpacity
         style={styles.btnAll}
-        onPress={() => navigation.navigate("OTP")}
+        onPress={handleRegister}
       >
         <LinearGradient colors={["#04BF45", "#1C9546"]} style={styles.btnnext}>
           <Text style={styles.textnext}>Đăng kí</Text>

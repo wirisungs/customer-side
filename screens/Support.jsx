@@ -8,18 +8,22 @@ import "tailwindcss/tailwind.css";
 import FastBtn from "../components/Support/FastBtn";
 import SupportRequest from "../components/Support/SupportRequest";
 
-const Support = ({ title }) => {
+const Support = ({ title,navigation,route }) => {
+  const { phone } = route.params;
   title = "Trợ giúp";
   return (
     <View className="bg-[#fff] ">
       <Header screenName={title} />
       <ScrollView className="w-full h-full">
         {/* Box 1 */}
-        <FastBtn />
+        <FastBtn navigation={navigation} route={route}/>
+        {/* <Text>{phone}</Text> */}
         {/* Line */}
         <View className="bg-[#F3f4f6] h-[8px]"></View>
         {/* Box 2 */}
         <SupportRequest />
+     
+  
       </ScrollView>
     </View>
   );

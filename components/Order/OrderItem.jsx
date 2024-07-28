@@ -62,6 +62,8 @@ const OrderItem = () => {
               <Text style={styles.info}>
                 Note: {item.Note}
               </Text>
+              <Text style={styles.info}>
+              </Text>
             </View>
 
             <View style={styles.line} />
