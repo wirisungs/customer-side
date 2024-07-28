@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import HeaderForStack from "../components/Header/HeaderForStack";
 
@@ -6,8 +6,15 @@ import ServiceBtn from "../components/Buttons/ServiceBtn";
 
 import "tailwindcss/tailwind.css";
 import Button from "../components/Buttons/Button";
+import { useRoute } from "@react-navigation/native";
 
 const Service = () => {
+  const route = useRoute();
+  const GHTKCost = route.params.GHTKCost;
+  const GHNCost = route.params.GHNCost;
+  const GHTLCost = route.params.GHTLCost;
+  const GHTPCost = route.params.GHTPCost;
+
   return (
     <View>
       <HeaderForStack screenName={"Dịch vụ"} />
@@ -21,28 +28,28 @@ const Service = () => {
               <ServiceBtn
                 nameService={"Giao hàng tiết kiệm"}
                 timeLine={"5-6"}
-                Price={"16.000"}
+                Price={GHTKCost}
               />
             </View>
             <View>
               <ServiceBtn
                 nameService={"Giao hàng nhanh"}
                 timeLine={"2-3"}
-                Price={"55.000"}
+                Price={GHNCost}
               />
             </View>
             <View>
               <ServiceBtn
                 nameService={"Giao tên lửa"}
                 timeLine={"trong"}
-                Price={"106.000"}
+                Price={GHTLCost}
               />
             </View>
             <View>
               <ServiceBtn
                 nameService={"Giao hàng Thiên Phúc"}
                 timeLine={"trong"}
-                Price={"322.000"}
+                Price={GHTPCost}
               />
             </View>
           </View>
