@@ -6,9 +6,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import "tailwindcss/tailwind.css";
 import HeaderForStack from "../components/Header/HeaderForStack";
+import Dropdown from '../Icons/Dropdown'
 
 // API
 import { geocodeAddress } from "../api";
@@ -31,10 +33,13 @@ const FeeCal = ({route}) => {
     rong,
     cao,
     note,
-    phone 
+    phone,
+    pth 
   } = route.params || {};
   const [addressPickup, setAddressPickup] = useState(locationsend || "");
   const [addressDrop, setAddressDrop] =useState(location || "");
+  const [weight, setWeight] = useState("");
+
   const [coordinatesPickup, setCoordinatesPickup] = useState([]);
   const [coordinatesDrop, setCoordinatesDrop] = useState([]);
  
@@ -45,55 +50,80 @@ const FeeCal = ({route}) => {
   const [GHTLCost, setGHTLCost] = useState(null);
   const [GHTPCost, setGHTPCost] = useState(null);
 
-  const [isNull, setIsNull] = useState(false);
+  const [isPickNull, setIsPickNull] = useState(false);
+  const [isDropNull, setIsDropNull] = useState(false);
+  const [isWeightNull, setIsWeightNull] = useState(false);
   const [isExists, setIsExists] = useState(true);
 
   // Navigation
   const navigation = useNavigation();
 
   const handleNavigation = (costs) => {
-    navigation.navigate("CreateStep2", {
-      ...costs,
-      number,
-      name,
-      namepro,
-      kl,
-      sl,
-      dai,
-      rong,
-      cao,
-      note,
-      phone,
-      location
-    });
+    if(!namepro ){
+      navigation.navigate("Service",{...costs})
+    }
+    else{
+      navigation.navigate("CreateStep2", {
+        ...costs,
+        number,
+        name,
+        namepro,
+        kl,
+        sl,
+        dai,
+        rong,
+        cao,
+        note,
+        phone,
+        location,
+        pth
+      });
+    }
   };
   
+  const checkNull = () => {
+    setIsPickNull(addressPickup === "" ? true : false);
+    setIsDropNull(addressDrop === "" ? true : false);
+    setIsWeightNull(weight === "" ? true : false);
+  };
+
+  
+
+  const checkInVN = (data1, data2) => {
+    if (
+      data1.items[0].address.countryCode !== "VNM" ||
+      data2.items[0].address.countryCode !== "VNM"
+    ) {
+      setIsExists(false);
+      return false;
+    } else {
+      setIsExists(true);
+      return true;
+    }
+  };
 
   const handleSearch = async () => {
-    if (addressPickup === "" || addressDrop === "") {
-      setIsNull(true);
-      return;
-    } else {
-      setIsNull(false);
-    }
+    checkNull();
     try {
       const data1 = await geocodeAddress(addressPickup);
       const data2 = await geocodeAddress(addressDrop);
-      console.log(data1.items);
+      console.log(data1.items[0].address.countryCode);
       console.log(data2.items);
 
-      if (data1.items && data1.items.length > 0) {
-        const coord1 = data1.items.map((item) => item.position);
-        setCoordinatesPickup(coord1);
-      } else {
-        setCoordinatesPickup([]);
-      }
+      if (checkInVN(data1, data2)) {
+        if (data1.items && data1.items.length > 0) {
+          const coord1 = data1.items.map((item) => item.position);
+          setCoordinatesPickup(coord1);
+        } else {
+          setCoordinatesPickup([]);
+        }
 
-      if (data2.items && data2.items.length > 0) {
-        const coord2 = data2.items.map((item) => item.position);
-        setCoordinatesDrop(coord2);
-      } else {
-        setCoordinatesDrop([]);
+        if (data2.items && data2.items.length > 0) {
+          const coord2 = data2.items.map((item) => item.position);
+          setCoordinatesDrop(coord2);
+        } else {
+          setCoordinatesDrop([]);
+        }
       }
     } catch (e) {
       setIsExists(false);
@@ -135,56 +165,28 @@ const FeeCal = ({route}) => {
     const distance = ((R * c) / 1000).toFixed(1);
     console.log(distance, "km");
 
-    const kl = 3200;
-
     // Giao hàng tiết kiệm
     let GHTK;
-    if (kl <= 2500) {
-      GHTK = 22000;
-    } else {
-      const klconlai = kl - 2500;
-      GHTK = 22000;
-      const solan500g = Math.round(klconlai / 500);
-
-      for (let i = 0; i < solan500g; i++) {
-        GHTK += 3500;
-      }
-    }
+    GHTK = 12500 + 1000 * distance + (1000 * weight) / 1000;
     // Giao hàng nhanh
     let GHN;
-    if (distance <= 8) {
-      GHN = 23000;
-    } else {
-      const QDConLai = (distance - 8).toFixed();
-      GHN = 23000;
-
-      for (let i = 0; i < QDConLai; i++) {
-        GHN += 18000;
-      }
-    }
+    GHN = 20000 + 2000 * distance + (2500 * weight) / 1000;
     // Giao hàng nhanh
     let GHTL;
-    if (distance <= 4) {
-      GHTL = 50000;
-    } else {
-      const QDConLai = (distance - 4).toFixed();
-      GHTL = 25000;
+    GHTL = 50000 + 4000 * distance + (3000 * weight) / 1000;
 
-      for (let i = 0; i < QDConLai; i++) {
-        GHTL += 18000;
-      }
-    }
-
-    let GHTP = 0;
-
-    for (let i = 0; i < distance; i++) {
-      GHTP += 300000;
-    }
+    let GHTP;
+    GHTP = 300000 + 4000 * distance + (3000 * weight) / 1000;
     return { GHTKCost: GHTK, GHNCost: GHN, GHTLCost: GHTL, GHTPCost: GHTP };
   };
 
   useEffect(() => {
-    if (coordinatesPickup.length > 0 && coordinatesDrop.length > 0) {
+    console.log(weight)
+    if (
+      coordinatesPickup.length > 0 &&
+      coordinatesDrop.length > 0 &&
+      weight.length >0
+    ) {
       const costs = Calcula();
       setGHTKCost(costs.GHTKCost);
       setGHNCost(costs.GHNCost);
@@ -202,8 +204,6 @@ const FeeCal = ({route}) => {
           <View className="content flex flex-col gap-[8px]">
             <View className="flex flex-row title">
               <Text style={styles.header3}>Khoảng cách</Text>
-              {/* <Text style={styles.header3}>{name}</Text>
-              <Text style={styles.header3}>{namepro}</Text> */}
               <Text className="ml-2 text-[20px] text-[#BF0A04]">*</Text>
             </View>
             <View className="inputContainer flex flex-rol">
@@ -211,11 +211,19 @@ const FeeCal = ({route}) => {
                 <View>
                   <Text style={styles.content}>Nơi gửi</Text>
                 </View>
-                <View className=" flex flex-row items-center border-solid border-2 border-[#e2e2e2] rounded-2xl w-full p-3 mt-[6px] ">
+                <View
+                  className=" flex flex-row items-center border-solid border-2 rounded-2xl w-full p-3 mt-[6px] "
+                  style={
+                    isPickNull
+                      ? { borderColor: "#FF0000" }
+                      : { borderColor: "#E2E2E2" }
+                  }
+                >
                   <TextInput
                     placeholder={"Tỉnh / Thành / Quận / Huyện"}
-                    value={addressPickup}
                     onChangeText={setAddressPickup}
+                    value= {addressPickup}
+                    onChange={() => setIsPickNull(false)}
                   />
                 </View>
 
@@ -245,18 +253,26 @@ const FeeCal = ({route}) => {
                 <View>
                   <Text style={styles.content}>Nơi nhận</Text>
                 </View>
-                <View className=" flex flex-row items-center border-solid border-2 border-[#e2e2e2] rounded-2xl w-full p-3 mt-[6px] ">
+                <View
+                  className=" flex flex-row items-center border-solid border-2 rounded-2xl w-full p-3 mt-[6px] "
+                  style={
+                    isDropNull
+                      ? { borderColor: "#FF0000" }
+                      : { borderColor: "#E2E2E2" }
+                  }
+                >
                   <TextInput
                     placeholder={"Tỉnh / Thành / Quận / Huyện"}
-                    value={addressDrop}
                     onChangeText={setAddressDrop}
+                    value= {addressDrop}
+                    onChange={() => setIsDropNull(false)}
                   />
                 </View>
 
                 {/* Ví dụ */}
                 <View className=" flex flex-row items-center w-full mt-[6px] ">
                   <Text>
-                    <Text className="text-[14px] text-[#1c1c1c]">
+<Text className="text-[14px] text-[#1c1c1c]">
                       VD: Người nhận ở
                     </Text>
                     <Text className="text-[14px] text-yellow-500 font-bold">
@@ -273,33 +289,51 @@ const FeeCal = ({route}) => {
                     </Text>
                   </Text>
                 </View>
-
-                {/* Notice */}
-                {isNull ? (
-                  <View className=" flex flex-row items-center w-full mt-[6px] ">
-                    <Text className="text-[14px] text-red-600">
-                      * Không được để trống
-                    </Text>
-                  </View>
-                ) : isExists ? (
-                  ""
-                ) : (
-                  <View className=" flex flex-row items-center w-full mt-[6px] ">
-                    <Text className="text-[14px] text-red-600">
-                      * Không được để trống
-                    </Text>
-                  </View>
-                )}
               </View>
             </View>
+            {/* Notice */}
+            {!isExists ? (
+              <View className=" flex flex-row items-center w-full mt-[6px] ">
+                <Text className="text-[14px] text-red-600">
+                  * Địa chỉ phải thuộc Việt Nam
+                </Text>
+              </View>
+            ) : (
+              ""
+            )}
           </View>
           <View className="content flex flex-col gap-[8px] mt-6">
             <View className="flex flex-row title mb-[6px]">
               <Text style={styles.header3}>Kích thước & khối lượng</Text>
             </View>
             <View className="inputContainer flex flex-row mb-1">
-              <View id="Weight">
-                <EnterInput placeholder={"Nặng"} unitCustom={"g"} />
+              {/* Component input  */}
+
+              <View className="flex flex-row items-center mr-3">
+                <TextInput
+                  editable
+                  multiline
+                  numberOfLines={1}
+                  maxLength={10}
+                  placeholder="Nặng"
+                  onChangeText={setWeight}
+                  onChange={() => setIsWeightNull(false)}
+                  className="w-[90px] h-[57px] px-6 border-2 border-solid border-r-0 rounded-l-3xl"
+                  style={
+                    isWeightNull
+                      ? { borderColor: "#FF0000" }
+                      : { borderColor: "#E2E2E2" }
+                  }
+                />
+                <LinearGradient
+                  className="flex items-center justify-center w-[80px] h-[57px]  rounded-r-3xl"
+                  colors={["#04BF45", "#1C9546"]}
+                >
+                  <TouchableOpacity className="flex flex-row">
+                    <Text className="text-white text-[16px]">g</Text>
+                    <Dropdown fill="#fff" />
+                  </TouchableOpacity>
+                </LinearGradient>
               </View>
               <View>
                 <EnterInput placeholder={"Cao"} />
@@ -315,12 +349,23 @@ const FeeCal = ({route}) => {
               </View>
             </View>
 
-            <View className="checkBox flex flex-row">
-              <View className="flex-1">
+            <View className="checkBox flex flex-row mb-3">
+<View className="flex-1">
                 <Checkbox Content={"Thu hộ phí COD"} />
+                {/* Notice */}
+                {isPickNull || isDropNull || isWeightNull ? (
+                  <View className=" flex flex-row items-center w-full mt-[6px] ">
+                    <Text className="text-[14px] text-red-600">
+                      * Không được để trống những ô đỏ
+                    </Text>
+                  </View>
+                ) : (
+                  ""
+                )}
               </View>
             </View>
           </View>
+
           <TouchableOpacity onPress={() => handleSearch()}>
             <LinearGradient
               className="mt-8 p-3 flex flex-row relative justify-center items-center rounded-3xl"
@@ -356,3 +401,5 @@ const styles = StyleSheet.create({
 });
 
 export default FeeCal;
+
+

@@ -13,7 +13,7 @@ export default function TestPush({ navigation,route }) {
     console.log('Phone:', phone); // Thêm dòng này để kiểm tra giá trị phone
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://10.0.2.2:4001/api/test?email=${phone}`);
+        const response = await fetch(`http://172.31.54.110:4001/api/test?email=${phone}`);
         const messagesData = await response.json();
         setMessages(messagesData);
       } catch (error) {
@@ -31,7 +31,7 @@ export default function TestPush({ navigation,route }) {
       return;
     }
     try {
-      const url = `http://10.0.2.2:4001/api/test?email=${phone}`;
+      const url = `http://172.31.54.110:4001/api/test?email=${phone}`;
       console.log('Fetch URL:', url); // Thêm dòng này để kiểm tra URL
       const response = await fetch(url, {
         method: 'POST',
@@ -51,7 +51,7 @@ export default function TestPush({ navigation,route }) {
         // Alert.alert('Thành công', 'Dữ liệu đã được thêm thành công!');
         const fetchData = async () => {
           try {
-            const response = await fetch(`http://192.168.1.18:4001/api/test?email=${phone}`);
+            const response = await fetch(`http://172.31.54.110:4001/api/test?email=${phone}`);
             const messagesData = await response.json();
             setMessages(messagesData);
           } catch (error) {

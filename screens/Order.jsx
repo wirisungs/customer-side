@@ -5,8 +5,9 @@ import "tailwindcss/tailwind.css";
 import SenderView from "../components/Order/SenderOrder";
 import ReceiverView from "../components/Order/ReceiverOrder";
 
-const Order = () => {
+const Order = ({route}) => {
   const [activeSender, setActiveSender] = useState(true);
+  const {phone} = route.params || {};
 
   const title = "Đơn hàng";
   return (
@@ -16,9 +17,10 @@ const Order = () => {
         activeSender={activeSender}
         setActiveSender={setActiveSender}
       />
+  
       <ScrollView className="flex flex-1 px-6">
         <View className="flex py-6">
-          {activeSender ? <SenderView /> : <ReceiverView />}
+          {activeSender ? <SenderView  phone={phone}/> : <ReceiverView  phone={phone}/>}
         </View>
       </ScrollView>
     </View>

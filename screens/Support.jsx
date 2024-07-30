@@ -23,7 +23,6 @@ const Support = ({ title,navigation,route }) => {
         {/* Box 2 */}
         <SupportRequest />
      
-  
       </ScrollView>
     </View>
   );

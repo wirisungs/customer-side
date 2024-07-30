@@ -42,9 +42,8 @@ export default function Step1({ navigation,phone }) {
   const [rong, setRong] = useState('');
   const [cao, setCao] = useState('');
   const [note, setNote] = useState('');
+  const [pth,setPTH] = useState('');
 
-  const [text1, setText1] = useState('');
-  const [text2, setText2] = useState('');
   const [promotions, setPromotions] = useState([]);
 
   const changeKL = () => {
@@ -93,73 +92,44 @@ export default function Step1({ navigation,phone }) {
     return result;
   };
 
-  const generateRandomString = (length) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
-
-  const generateRandomPrice = () => {
-    return Math.floor(Math.random() * 100000) + 10000;
-  };
-
-  const handleSubmit = async () => {
-    if (!number.trim() || !name.trim()) {
-      Alert.alert('Lỗi', 'Bạn cần nhập dữ liệu!');
+  const nextpage = () => {
+    if (!location || !locationsend ||!number ||!name ||!namepro ||!kl||!sl||!dai||!rong||!cao.trim()) {
+      Alert.alert('Lưu ý', 'Bạn cần nhập đầy đủ thông tin!');
       return;
     }
-
-    try {
-      const response = await fetch('http://10.0.2.2:4001/api/order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          Address: location,
-          Code: generateRandomString(10),
-          Detail: namepro,
-          Price: generateRandomPrice(),
-          ReceiverName: name,
-          SDT: number,
-          KL: changeKL(),
-          SL: sl,
-          Width: changeRong(),
-          Height: changeCao(),
-          Length: changeDai(),
-          Note: note,
-          Status: 'Chờ vận chuyển',
-          driverID: "",
-          Email: phone
-        }),
+    else{
+      navigation.navigate('TraCuocPhi', {
+        location,
+        locationsend,
+        number,
+        name,
+        namepro,
+        kl: changeKL(kl),
+        sl,
+        dai: changeDai(dai),
+        rong: changeRong(rong), 
+        cao: changeCao(cao),
+        note,
+        phone,
+        pth : pth ? pth: 0
       });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        Alert.alert('Thành công', 'Dữ liệu đã được thêm thành công!');
-        setNumber('');
-        setLocation('');
-        setNamepro('');
-        setName('');
-        setKL('');
-        setSL('');
-        setRong('');
-        setCao('');
-        setDai('');
-        setNote('');
-      } else {
-        Alert.alert('Lỗi', result.error || 'Có lỗi xảy ra khi gửi dữ liệu.');
-      }
-    } catch (error) {
-      console.error('Lỗi khi gửi dữ liệu:', error);
-      Alert.alert('Lỗi', 'Có lỗi xảy ra khi gửi dữ liệu.');
+        // setNumber('');
+        // setLocation('');
+        // setNamepro('');
+        // setName('');
+        // setKL('');
+        // setSL('');
+        // setRong('');
+        // setCao('');
+        // setDai('');
+        // setNote('');
+        // setLocationSend('');
+        // setPTH('');
     }
+   
   };
+
+  
 
   return (
     <View style={styles.container}>
@@ -190,6 +160,7 @@ export default function Step1({ navigation,phone }) {
             <TextInput
               onChangeText={setNumber}
               value={number}
+              keyboardType="numeric"
               placeholder="Số điện thoại"
               style={styles.input}
             />
@@ -234,6 +205,7 @@ export default function Step1({ navigation,phone }) {
               <TextInput
                 onChangeText={setKL}
                 value={kl}
+                keyboardType="numeric"
                 placeholder="Khối lượng hàng"
                 style={styles.input}
               />
@@ -254,6 +226,7 @@ export default function Step1({ navigation,phone }) {
               onChangeText={setSL}
               value={sl}
               placeholder="Số lượng"
+              keyboardType="numeric"
               style={styles.input}
             />
             <View style={styles.viewadd}>
@@ -269,6 +242,7 @@ export default function Step1({ navigation,phone }) {
                 onChangeText={setDai}
                 value={dai}
                 placeholder="Chiều dài"
+                keyboardType="numeric"
                 style={styles.input}
               />
               <RNPickerSelect
@@ -289,6 +263,7 @@ export default function Step1({ navigation,phone }) {
                 onChangeText={setRong}
                 value={rong}
                 placeholder="Chiều rộng"
+                keyboardType="numeric"
                 style={styles.input}
               />
               <RNPickerSelect
@@ -309,6 +284,7 @@ export default function Step1({ navigation,phone }) {
                 onChangeText={setCao}
                 value={cao}
                 placeholder="Chiều cao"
+                keyboardType="numeric"
                 style={styles.input}
               />
               <RNPickerSelect
@@ -332,31 +308,19 @@ export default function Step1({ navigation,phone }) {
             />
           </View>
           <Text style={styles.textnote}>
-            Lưu ý: Không được để trống bất kì ô nào
+            Không bắt buộc
           </Text>
+          <View style={styles.inputAll}>
+            <TextInput
+              onChangeText={setPTH}
+              value={pth}
+              keyboardType="numeric"
+              placeholder="Phí thu hộ"
+              style={styles.input}
+            />
+          </View>
         </View>
-        {/* <TouchableOpacity onPress={handleSubmit}>
-          <LinearGradient
-            colors={["#04BF45", "#1C9546"]}
-            style={styles.btnnext}
-          >
-            <Text style={styles.textnext}>Tiếp theo</Text>
-          </LinearGradient>
-        </TouchableOpacity> */}
-         <TouchableOpacity onPress={() => navigation.navigate('TraCuocPhi',{
-                                                                             location,
-                                                                             locationsend,
-                                                                             number,
-                                                                             name,
-                                                                             namepro,
-                                                                             kl,
-                                                                             sl,
-                                                                             dai,
-                                                                             rong,
-                                                                             cao,
-                                                                             note,
-                                                                             phone
-                                                                             })}>
+         <TouchableOpacity onPress={nextpage}>
           <LinearGradient
             colors={["#04BF45", "#1C9546"]}
             style={styles.btnnext}

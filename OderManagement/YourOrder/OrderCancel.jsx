@@ -9,7 +9,7 @@ export default function OrderCancel({ navigation }) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://10.0.2.2:4001/api/ordercancel');
+          const response = await fetch('http://172.31.54.110:4001/api/ordercancel');
           const promotionsData = await response.json();
           setPromotions(promotionsData);
         } catch (error) {

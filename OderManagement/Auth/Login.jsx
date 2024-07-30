@@ -70,7 +70,7 @@ export default function Login({ navigation }) {
         </View>
         <View style={styles.checkboxContainer}>
           <Checkbox Content={"Ghi nhớ mật khẩu"} />
-          <TouchableOpacity onPress={() => navigation.navigate("Forgot")}>
+          <TouchableOpacity>
             <Text style={styles.forgotPasswordText}>Quên mật khẩu</Text>
           </TouchableOpacity>
         </View>

@@ -8,14 +8,14 @@ export default function OrderWait({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:4001/api/orderwait');
+        const response = await fetch('http://172.31.54.110:4001/api/orderwait');
         const promotionsData = await response.json();
         setPromotions(promotionsData);
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu:', error);
       }
     };
-
+//172.31.54.110
     fetchData();
   }, []);
   const formatPrice = (price) => {
@@ -25,7 +25,7 @@ export default function OrderWait({ navigation }) {
     <View style={styles.container}>
         <ScrollView  showsVerticalScrollIndicator={false}>
         {promotions.map((item, index) => (
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('Map')}>
+            <TouchableOpacity key={index} onPress={() => navigation.navigate('OrderDetail',{order : item})}>
             <View style={styles.box}>
                 <View style={styles.row1}>
                     <Text style={styles.macode}>{item.Code}</Text>

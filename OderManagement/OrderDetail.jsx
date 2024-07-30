@@ -1,14 +1,15 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View,Text } from 'react-native';
 
 import DetailOrder from './Main/DetailOrder';
 
-export default function OrderDetail({ navigation }) {
-  // const nameHeader = "Chi tiết";
+export default function OrderDetail({ navigation,route }) {
+  const { order } = route.params ;
   return (
     <View style={styles.container}>
-        {/* <GreenHeader navigation={navigation} nameHeader={nameHeader}/> */}
-        <DetailOrder  navigation={navigation}/>
+        
+        <DetailOrder  navigation={navigation} order={order}/>
+    
     </View>
   );
 }

@@ -2,23 +2,26 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-const OrderItem = () => {
+const OrderItem = ({phone}) => {
   const navigation = useNavigation();
   const [promotions, setPromotions] = useState([]);
   
+  
   useEffect(() => {
+    console.log('Phone:', phone); // Thêm dòng này để kiểm tra giá trị phone
     const fetchData = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:4001/api/order');
-        const promotionsData = await response.json();
-        setPromotions(promotionsData);
+        const response = await fetch(`http://172.31.54.110:4001/api/order?email=${phone}`);
+        const messagesData = await response.json();
+        setPromotions(messagesData);
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu:', error);
       }
     };
-
+  //192.168.1.18
     fetchData();
-  }, []);
+  }, [phone]);
+
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -27,7 +30,7 @@ const OrderItem = () => {
       {promotions.map((item, index) => (
         <TouchableOpacity
           activeOpacity={1}
-          onPress={() => navigation.navigate("OrderDetail")}
+          onPress={() => navigation.navigate("OrderDetail",{order:item})}
           key={index}
         >
           <View

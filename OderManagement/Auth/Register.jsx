@@ -15,6 +15,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 
 export default function Register({ navigation }) {
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [name, setName] = useState("");
@@ -22,24 +23,84 @@ export default function Register({ navigation }) {
 
     const auth = getAuth();
 
-    const handleRegister = async () => {
+    // const handleRegister = async () => {
+    //   if (password !== repassword) {
+    //     Alert.alert('Error', 'Mật khẩu và nhập lại mật khẩu không khớp!');
+    //     return;
+    //   }
+    //   if (!isChecked) {
+    //     Alert.alert('Error', 'Bạn phải đồng ý với điều khoản sử dụng!');
+    //     return;
+    //   }
+    //   try {
+    //     await createUserWithEmailAndPassword(auth, email, password);
+    //     navigation.navigate('LoginPage');
+    //   } catch (error) {
+    //     console.error('Registration error:', error.message);
+    //     Alert.alert('Registration failed!', 'Please try again.');
+    //   }
+    // };
+
+    const handleSubmit = async () => {
+  
+      if (!name || !phone ||!email ||!password ||!repassword .trim()) {
+        Alert.alert('Thông báo', 'Bạn cần nhập đủ thông tin');
+        return;
+      }
       if (password !== repassword) {
-        Alert.alert('Error', 'Mật khẩu và nhập lại mật khẩu không khớp!');
+        Alert.alert('Thông báo', 'Mật khẩu và nhập lại mật khẩu không khớp!');
         return;
       }
       if (!isChecked) {
-        Alert.alert('Error', 'Bạn phải đồng ý với điều khoản sử dụng!');
+        Alert.alert('Thông báo', 'Bạn phải đồng ý với điều khoản sử dụng!');
         return;
       }
+  //192.168.1.18
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        navigation.navigate('LoginPage');
+        const response = await fetch('http://172.31.54.110:4000/api/user', {  
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            Name:name,
+            SDT: phone,
+            Email: email,
+            Gender: "Nam",
+            DOB:"29/02/2004",
+            Address: "457 Huỳnh Tấn Phát"
+          }),
+        });
+  
+        const result = await response.json();
+  
+        if (response.ok) {
+          // Alert.alert('Thành công', 'Dữ liệu đã được thêm thành công!');
+          try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            navigation.navigate('LoginPage');
+          } catch (error) {
+            console.error('Registration error:', error.message);
+            Alert.alert('Registration failed!', 'Please try again.');
+          }
+          // setNumber('');
+          // setLocation('');
+          // setNamepro('');
+          // setName('');
+          // setKL('');
+          // setSL('');
+          // setRong('');
+          // setCao('');
+          // setDai('');
+          // setNote('');
+        } else {
+          Alert.alert('Lỗi', result.error || 'Có lỗi xảy ra khi gửi dữ liệu.');
+        }
       } catch (error) {
-        console.error('Registration error:', error.message);
-        Alert.alert('Registration failed!', 'Please try again.');
+        console.error('Lỗi khi gửi dữ liệu:', error);
+        Alert.alert('Lỗi', 'Có lỗi xảy ra khi gửi dữ liệu.');
       }
     };
-
   return (
     <View style={styles.container}>
       <View style={styles.topicAll}>
@@ -54,6 +115,15 @@ export default function Register({ navigation }) {
             placeholder="Họ và tên"
             style={styles.numberPhone}
             keyboardType="default"
+          />
+        </View>
+        <View style={styles.phoneText}>
+          <TextInput
+            onChangeText={setPhone}
+            value={phone}
+            placeholder="Số điện thoại"
+            style={styles.numberPhone}
+            keyboardType="numeric"
           />
         </View>
         <View style={styles.phoneText}>
@@ -94,7 +164,7 @@ export default function Register({ navigation }) {
 
       <TouchableOpacity
         style={styles.btnAll}
-        onPress={handleRegister}
+        onPress={handleSubmit}
       >
         <LinearGradient colors={["#04BF45", "#1C9546"]} style={styles.btnnext}>
           <Text style={styles.textnext}>Đăng kí</Text>

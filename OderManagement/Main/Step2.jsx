@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity,Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { ImagesAssets } from '../../Image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,12 +8,13 @@ export default function Step2({ navigation }) {
   const route = useRoute();
   const [selectedItem, setSelectedItem] = useState(null);
   const [promotions, setPromotions] = useState([]);
-  const { number, name, namepro, kl, sl, dai, rong, cao, note, phone, location, GHTKCost, GHNCost, GHTLCost, GHTPCost } = route.params;
+  const { number, name, namepro, kl, sl, dai, rong, cao, note, phone, location, GHTKCost, GHNCost, GHTLCost, GHTPCost,pth } = route.params;
+  const {voucher} = route.params || {};
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:4001/api/service');
+        const response = await fetch('http://172.31.54.110:4001/api/service');   
         const promotionsData = await response.json();
         setPromotions(promotionsData);
       } catch (error) {
@@ -24,6 +25,66 @@ export default function Step2({ navigation }) {
     fetchData();
   }, []);
 
+  const generateRandomString = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+  const formatPriceTurn = (price) => {
+    // Loại bỏ tất cả dấu phân cách và chuyển đổi về số nguyên
+    return parseInt(price.toString().replace(/\./g, ''));
+  };
+
+  const handleSubmit = async () => {
+  
+    if (!selectedItem || !selectedItem.Name.trim()) {
+      Alert.alert('Lỗi', 'Bạn cần chọn loại dịch vụ!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://172.31.54.110:4001/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Address: location,
+          Code: generateRandomString(10),
+          Detail: namepro,
+          Price: formatPriceTurn(getCost(selectedItem?.Name)) - (voucher ? voucher.Discount : 0),
+          ReceiverName: name,
+          SDT: number,
+          KL: kl,
+          SL: sl,
+          Width: rong,
+          Height: cao,
+          Length: dai,
+          Note: note,
+          Status: 'Chờ vận chuyển',
+          driverID: "",
+          Email: phone,
+          PTH: pth
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        navigation.navigate('CreateDone');
+       
+      } else {
+        Alert.alert('Lỗi', result.error || 'Có lỗi xảy ra khi gửi dữ liệu.');
+      }
+    } catch (error) {
+      console.error('Lỗi khi gửi dữ liệu:', error);
+      Alert.alert('Lỗi', 'Có lỗi xảy ra khi gửi dữ liệu.');
+    }
+  };
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -41,6 +102,36 @@ export default function Step2({ navigation }) {
       default:
         return "";
     }
+  };
+  const formattedCost = formatPriceTurn(getCost(selectedItem?.Name));
+
+  const nextvoucher = () => {
+    if (!selectedItem || !selectedItem.Name.trim()) {
+      Alert.alert('Lỗi', 'Bạn cần chọn loại dịch vụ!');
+      return;
+    }
+    else{
+      navigation.navigate('VoucherPage', {
+        number,
+        name,
+        namepro,
+        kl,
+        sl,
+        dai,
+        rong,
+        cao,
+        note,
+        phone,
+        location,
+        GHTKCost,
+        GHNCost,
+        GHTLCost,
+        GHTPCost,
+        formattedCost,
+        pth
+      });
+    }
+   
   };
 
   return (
@@ -63,21 +154,12 @@ export default function Step2({ navigation }) {
           ))}
         </View>
         <Text style={styles.texttopic1}>Áp dụng mã giảm giá</Text>
-        <Text style={styles.texttopic1}>{number}</Text>
-        <Text style={styles.texttopic1}>{name}</Text>
-        <Text style={styles.texttopic1}>{namepro}</Text>
-        <Text style={styles.texttopic1}>{kl}</Text>
-        <Text style={styles.texttopic1}>{sl}</Text>
-        <Text style={styles.texttopic1}>{dai}</Text>
-        <Text style={styles.texttopic1}>{rong}</Text>
-        <Text style={styles.texttopic1}>{cao}</Text>
-        <Text style={styles.texttopic1}>{note}</Text>
-        <Text style={styles.texttopic1}>{phone}</Text>
-        <Text style={styles.texttopic1}>{location}</Text>
-
+        
         <View style={styles.rowvoucher}>
-          <Text style={styles.textTopic}>Chọn mã giảm giá</Text>
-          <TouchableOpacity style={styles.imgnext} onPress={() => navigation.navigate('VoucherPage')}>
+        <Text style={styles.textTopic}>
+            {voucher && voucher.Discount > 0 ? `Đã giảm ${voucher.Discount}đ` : 'Chọn mã giảm giá'}
+        </Text>
+          <TouchableOpacity style={styles.imgnext} onPress={nextvoucher}>
             <Image
               source={ImagesAssets.nextright}
               style={styles.imgnext2}
@@ -105,7 +187,7 @@ export default function Step2({ navigation }) {
             <Text style={styles.namedv}>Chưa chọn dịch vụ</Text>
           )}
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('CreateDone')}>
+        <TouchableOpacity onPress={handleSubmit}>
           <LinearGradient colors={['#04BF45', '#1C9546']} style={styles.btnsuccess}>
             <Text style={styles.textbtn}>Hoàn tất</Text>
           </LinearGradient>

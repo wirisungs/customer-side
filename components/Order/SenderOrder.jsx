@@ -3,11 +3,11 @@ import { StyleSheet, View, Text } from "react-native";
 import "tailwindcss/tailwind.css";
 import OrderItem from "./OrderItem";
 
-const SenderOrder = () => {
+const SenderOrder = ({phone}) => {
   return (
     <View className="flex gap-y-4">
       <View>
-        <OrderItem />
+        <OrderItem phone={phone}/>
       </View>
       
     </View>

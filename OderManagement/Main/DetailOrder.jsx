@@ -16,18 +16,49 @@ import Car from "../Icons/CarContinue";
 import Line from "../Icons/LineNext";
 import Done from "../Icons/DonePro";
 import LineVer from "../Icons/VerticalLine";
-// import GreenHeader from "../Header/GreenHeader";
 import HeaderForStack from "../../components/Header/HeaderForStack";
 
-export default function DetailOrder({ navigation }) {
+export default function DetailOrder({ navigation,order }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const nameHeader = "Chi tiết";
+
+  // const { order } = route.params 
 
   const copyToClipboard = () => {
-    Clipboard.setString("DBAHX8QJXD");
+    Clipboard.setString(order.Code);
     Alert.alert("Đã sao chép mã vào clipboard!");
   };
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+  const PTH = (parseFloat(order.PTH)) || 0; 
+  const Price = (order.Price) || 0; 
+  const total = PTH + Price; 
 
+  const cancelOrder = async () => {
+    try {
+      const response = await fetch('http://172.31.54.110:4001/api/order', {
+        method: 'PUT', // Sử dụng PUT để cập nhật dữ liệu
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...order,
+          Status: 'Đã hủy', // Cập nhật trạng thái đơn hàng
+        }),
+      });
+      const result = await response.json();
+  
+      if (response.ok) {
+        // Alert.alert('Thông báo', 'Đơn hàng đã được hủy thành công!');
+        navigation.navigate('OrderMain'); 
+      } else {
+        Alert.alert('Lỗi', 'Có lỗi xảy ra khi hủy đơn hàng: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Lỗi khi hủy đơn hàng:', error);
+      Alert.alert('Lỗi', 'Có lỗi xảy ra khi hủy đơn hàng.');
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       <HeaderForStack screenName={"Chi tiết"} />
@@ -35,7 +66,7 @@ export default function DetailOrder({ navigation }) {
         <View style={styles.container}>
           <View style={styles.all}>
             <View style={styles.all1}>
-              <Text style={styles.code}>DBAHX8QJXD</Text>
+              <Text style={styles.code}>{order.Code}</Text>
               <TouchableOpacity onPress={copyToClipboard}>
                 <Image source={ImagesAssets.copy} style={styles.imgcopy} />
               </TouchableOpacity>
@@ -57,6 +88,7 @@ export default function DetailOrder({ navigation }) {
           <View style={styles.all}>
             <View style={styles.all1}>
               <Text style={styles.text1}>Người gửi & người nhận</Text>
+          
             </View>
             <View style={styles.box2}>
               <View style={styles.boxline}>
@@ -70,37 +102,40 @@ export default function DetailOrder({ navigation }) {
                   32/21/2 Nguyễn Thị Minh Khai
                 </Text>
                 <Text style={styles.textstatus}>
-                  Thris Potato - 092032xxxxx
+                  {order.ReceiverName} - {order.SDT}
                 </Text>
                 <Text style={styles.textstatus1}>
-                  32/21/2 Nguyễn Thị Minh Khai
+                  {order.Address}
                 </Text>
               </View>
             </View>
+
             <View style={styles.box3}>
-              <View style={styles.status1}>
-                <View style={styles.status2}>
-                  <Text style={styles.text1}>Hóa đơn</Text>
-                  <Text style={styles.date}>12/07/2024</Text>
-                </View>
-                <View style={styles.status3}>
-                  <Text style={styles.textitem}>Móc khóa</Text>
-                  <Text style={styles.slitem}>x1</Text>
-                </View>
-                <View style={styles.status3}>
-                  <Text style={styles.text1}>Phí thu hộ (COD):</Text>
-                  <Text style={styles.slitem}>1.781.000đ</Text>
-                </View>
-                <View style={styles.status3}>
-                  <Text style={styles.text1}>Phí vận:</Text>
-                  <Text style={styles.slitem}>30.000đ</Text>
-                </View>
-                <View style={styles.status3}>
-                  <Text style={styles.text1}>Tổng:</Text>
-                  <Text style={styles.slitem}>1.830.000đ</Text>
-                </View>
-              </View>
-            </View>
+               <View style={styles.status1}>
+                 <View style={styles.status2}>
+                   <Text style={styles.text1}>Hóa đơn</Text>
+                   <Text style={styles.date}>12/07/2024</Text>
+                 </View>
+                 <View style={styles.status3}>
+                   <Text style={styles.textitem}>{order.Detail}</Text>
+                   <Text style={styles.slitem}>x{order.SL}</Text>
+                 </View>
+                 <View style={styles.status3}>
+                   <Text style={styles.text1}>Phí thu hộ (COD):</Text>
+                   <Text style={styles.slitem}>{order.PTH || '0'} đ</Text>
+
+                 </View>
+                 <View style={styles.status3}>
+                   <Text style={styles.text1}>Phí vận:</Text>
+                   <Text style={styles.slitem}>{formatPrice(order.Price)} đ</Text>
+                 </View>
+                 <View style={styles.status3}>
+                   <Text style={styles.text1}>Tổng:</Text>
+                   <Text style={styles.slitem}>{formatPrice(total)}đ</Text>
+                 </View>
+               </View>
+             </View>
+           
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <View style={styles.btnHuy}>
                 <Text style={styles.textHuy}>Hủy đơn</Text>
@@ -135,7 +170,7 @@ export default function DetailOrder({ navigation }) {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.btncancel}
-                    onPress={() => navigation.navigate("OrderMain")}
+                    onPress={cancelOrder}
                   >
                     <Text style={styles.textcancel2}>Hủy đơn</Text>
                   </TouchableOpacity>

@@ -8,7 +8,7 @@ export default function OrderGoing({ navigation }) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://10.0.2.2:4001/api/ordergoing');
+          const response = await fetch('http://172.31.54.110:4001/api/ordergoing');
           const promotionsData = await response.json();
           setPromotions(promotionsData);
         } catch (error) {
@@ -25,7 +25,7 @@ export default function OrderGoing({ navigation }) {
     <View style={styles.container}>
         <ScrollView  showsVerticalScrollIndicator={false}>
         {promotions.map((item, index) => (
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('Map')}>
+            <TouchableOpacity key={index} onPress={() => navigation.navigate('OrderDetail',{order : item})}>
             <View style={styles.box}>
                 <View style={styles.row1}>
                     <Text style={styles.macode}>{item.Code}</Text>

@@ -6,7 +6,7 @@ import { useRoute } from "@react-navigation/native";
 
 export default function CreateStep2({ navigation }) {
   const route = useRoute();
-  const { GHTKCost, GHNCost, GHTLCost, GHTPCost, number, name, namepro, kl, sl, dai, rong, cao, note, phone,location } = route.params;
+  const { GHTKCost, GHNCost, GHTLCost, GHTPCost, number, name, namepro, kl, sl, dai, rong, cao, note, phone,location,voucher,formattedCost,pth} = route.params;
 
   return (
     <View style={styles.container}>
@@ -28,6 +28,9 @@ export default function CreateStep2({ navigation }) {
         note={note}
         phone={phone}
         location={location}
+        voucher={voucher}
+        formattedCost={formattedCost}
+        pth={pth}
       />
     </View>
   );

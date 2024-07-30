@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Alert
 } from "react-native";
 
 import { ImagesAssets } from "../Image";
@@ -14,15 +15,14 @@ import { ImagesAssets } from "../Image";
 
 import HeaderForStack from "../components/Header/HeaderForStack";
 
-export default function Voucher({ navigation }) {
-  const nameHeader = "Mã giảm giá";
-
+export default function Voucher({ navigation,route }) {
+  const { number, name, namepro, kl, sl, dai, rong, cao, note, phone, location, GHTKCost, GHNCost, GHTLCost, GHTPCost,formattedCost,pth} = route.params || {};
   const [promotions, setPromotions] = useState([]);
 
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://10.0.2.2:4001/api/promotion');
+          const response = await fetch('http://172.31.54.110:4001/api/promotion');
           const promotionsData = await response.json();
           setPromotions(promotionsData);
         } catch (error) {
@@ -45,15 +45,45 @@ export default function Voucher({ navigation }) {
             placeholderTextColor="#1C1C1C"
             style={styles.input}
           />
-          <TouchableOpacity style={styles.imgnext}>
+        
+        </View>
+        <TouchableOpacity style={styles.imgnext}>
             <Image source={ImagesAssets.search} style={styles.imgnext2} />
           </TouchableOpacity>
-        </View>
       </View>
     );
   };
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  const ktvoucher = (item) => {
+    if (formattedCost < item.PriceOn) {
+      Alert.alert('Chú ý', 'Đơn hàng không đủ điều kiện áp dụng mã giảm giá!');
+      return;
+    }
+    else{
+      navigation.navigate('CreateStep2', {
+            number,
+            name,
+            namepro,
+            kl,
+            sl,
+            dai,
+            rong,
+            cao,
+            note,
+            phone,
+            location,
+            GHTKCost,
+            GHNCost,
+            GHTLCost,
+            GHTPCost,
+            voucher:item,
+            pth
+      });
+    }
+   
   };
   return (
     <View style={styles.container}>
@@ -61,16 +91,19 @@ export default function Voucher({ navigation }) {
       <ScrollView>
         <View style={styles.content}>
           <Text style={styles.text1}>Mã giảm giá</Text>
+         
           <Search />
           <View style={styles.box1}>
             <Text style={styles.text2}>
               Chú ý: Mã giảm giá chỉ được cấp tại
             </Text>
             <Text style={styles.text2}>ThienPhucExpress.com/voucher/</Text>
+            
           </View>
           <Text style={styles.text1}>Mã giảm giá của tôi</Text>
           {promotions.map((item, index) => (
-            <View key={index} style={styles.boxMain}>
+            <TouchableOpacity key={index} onPress={() => ktvoucher(item)}>
+             <View style={styles.boxMain}>
               <View style={styles.boxMain1}>
                 <Image source={ImagesAssets.promo} style={styles.imgpromo} />
               </View>
@@ -87,6 +120,8 @@ export default function Voucher({ navigation }) {
                 <Text style={styles.text3}>Giảm {formatPrice(item.Discount)}đ</Text>
               </View>
             </View>
+            </TouchableOpacity>
+        
           ))}
         </View>
       </ScrollView>
@@ -122,17 +157,22 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginVertical: 12,
     marginTop: 24,
+    flexDirection:'row',
+ 
   },
   input: {
     fontSize: 16,
     color: "#1C1C1C",
-    fontWeight: "400",
+    fontWeight: "600",
+    width:'90%'
   },
   imgnext2: {
     height: 25,
     width: 25,
-    position: "relative",
-    left: "700%",
+    alignSelf:'flex-end'
+  },
+  imgnext:{
+    
   },
   inputContainer: {
     flexDirection: "row",

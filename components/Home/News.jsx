@@ -13,7 +13,7 @@ const News = () => {
         </Text>
         <Image source={ImagesAssets.banner} resizeMode="cover" style={styles.imgcopy} />
       </View>
-      <View className="py-0 w-full">
+      <View className="py-0 w-full mt-4">
         <Slider className="w-full" />
       </View>
     </View>

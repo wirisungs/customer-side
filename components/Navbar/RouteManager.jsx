@@ -68,6 +68,7 @@ const RouteManager = ({route}) => {
 
       <Tab.Screen
         name={orderName}
+        initialParams={{ phone }}
         component={Order}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
